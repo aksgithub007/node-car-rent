@@ -11,7 +11,7 @@ require('dotenv').config()
 const displayRouter = require("./routes/display")
 const errorController = require("./controller/Error");
 const authRouter = require("./routes/auth");
-const transporter = require("./util/mailer")
+const transporter = require("./util/mailes")
 
 
 
