@@ -2,7 +2,7 @@ const Car = require('../model/Cars')
 const User = require('../model/User')
 const crypto   = require("crypto");
 const razorpay = require("../util/razorpay");
-// const transporter = require("../util/mailer")
+const transporter = require("../util/mailer")
 
 exports.getAllCars = (req, res, next) => {
     res.render('index', {
