@@ -1,0 +1,949 @@
+<%- include('includes/Head') %>
+<%- include('includes/Navigation') %>
+
+<%
+  /*
+    Controller passes:
+      bookings → array of booking subdocs
+      car      → nested array [[car1, car2, ...]]  (controller does car.push(cars))
+    Flatten once, then look up each car by _id per booking via findCar().
+  */
+  const carList = (car && car.length && Array.isArray(car[0])) ? car[0] : (car || []);
+  function findCar(bookingCarId) {
+    if (!bookingCarId) return null;
+    return carList.find(c => c._id && c._id.toString() === bookingCarId.toString()) || null;
+  }
+%>
+
+<main class="bookings-page">
+
+  <!-- ── Page Hero ─────────────────────────────────────── -->
+  <section class="bk-hero">
+    <div class="bk-hero-inner">
+      <div class="bk-hero-meta">
+        <span class="bk-tag">My Garage</span>
+        <div class="bk-hero-stats">
+          <div class="hero-stat">
+            <span class="hero-stat-val"><%= bookings ? bookings?.length : 0 %></span>
+            <span class="hero-stat-lbl">Total</span>
+          </div>
+          <div class="hero-stat-div"></div>
+          <div class="hero-stat">
+            <span class="hero-stat-val"><%= bookings ? bookings?.filter(b => b.status === 'confirmed').length : 0 %></span>
+            <span class="hero-stat-lbl">Confirmed</span>
+          </div>
+          <div class="hero-stat-div"></div>
+          <div class="hero-stat">
+            <span class="hero-stat-val"><%= bookings ? bookings?.filter(b => b.status === 'paid').length : 0 %></span>
+            <span class="hero-stat-lbl">Paid</span>
+          </div>
+          <div class="hero-stat-div"></div>
+          <div class="hero-stat">
+            <span class="hero-stat-val"><%= bookings ? bookings?.filter(b => b.status === 'cancelled').length : 0 %></span>
+            <span class="hero-stat-lbl">Cancelled</span>
+          </div>
+        </div>
+      </div>
+      <h1 class="bk-hero-title">Your <span>Bookings</span></h1>
+      <p class="bk-hero-sub">Track, manage and pay for all your DriveElite rentals in one place.</p>
+    </div>
+
+    <!-- Scrolling ticker -->
+    <div class="bk-ticker" aria-hidden="true">
+      <div class="ticker-track">
+        <span>DRIVE ELITE</span><span class="ticker-dot">◆</span>
+        <span>PREMIUM RENTALS</span><span class="ticker-dot">◆</span>
+        <span>YOUR BOOKINGS</span><span class="ticker-dot">◆</span>
+        <span>DRIVE ELITE</span><span class="ticker-dot">◆</span>
+        <span>PREMIUM RENTALS</span><span class="ticker-dot">◆</span>
+        <span>YOUR BOOKINGS</span><span class="ticker-dot">◆</span>
+        <span>DRIVE ELITE</span><span class="ticker-dot">◆</span>
+        <span>PREMIUM RENTALS</span><span class="ticker-dot">◆</span>
+        <span>YOUR BOOKINGS</span><span class="ticker-dot">◆</span>
+        <span>DRIVE ELITE</span><span class="ticker-dot">◆</span>
+        <span>PREMIUM RENTALS</span><span class="ticker-dot">◆</span>
+        <span>YOUR BOOKINGS</span><span class="ticker-dot">◆</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Filter Bar ──────────────────────────────────── -->
+  <section class="bk-filters">
+    <div class="bk-filters-inner">
+      <div class="filter-tabs">
+        <button class="filter-tab active" data-filter="all">
+          All <span class="filter-count"><%= bookings ? bookings?.length : 0 %></span>
+        </button>
+        <button class="filter-tab" data-filter="confirmed">
+          Confirmed <span class="filter-count"><%= bookings ? bookings?.filter(b => b.status === 'confirmed').length : 0 %></span>
+        </button>
+        <button class="filter-tab" data-filter="paid">
+          Paid <span class="filter-count"><%= bookings ? bookings?.filter(b => b.status === 'paid').length : 0 %></span>
+        </button>
+        <button class="filter-tab" data-filter="cancelled">
+          Cancelled <span class="filter-count"><%= bookings ? bookings?.filter(b => b.status === 'cancelled').length : 0 %></span>
+        </button>
+        <button class="filter-tab" data-filter="completed">
+          Completed <span class="filter-count"><%= bookings ? bookings?.filter(b => b.status === 'completed').length : 0 %></span>
+        </button>
+      </div>
+      <div class="filter-search">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/>
+        </svg>
+        <input type="text" id="searchInput" placeholder="Search by booking ID…" />
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Bookings Grid ───────────────────────────────── -->
+  <section class="bk-grid-section">
+    <div class="bk-grid" id="bookingsGrid">
+
+      <% if (!bookings || bookings?.length === 0) { %>
+
+        <!-- Empty state -->
+        <div class="bk-empty">
+          <div class="bk-empty-icon">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12"/>
+            </svg>
+          </div>
+          <h3>No bookings yet</h3>
+          <p>Start your DriveElite journey by booking a premium vehicle.</p>
+          <a href="/cars" class="bk-cta-btn">Browse Cars</a>
+        </div>
+
+      <% } else { %>
+
+        <% bookings.forEach((booking, i) => { %>
+
+        <%
+          /* Safe date parsing */
+          const pickup  = new Date(booking.pickupDate)
+          const dropoff = new Date(booking.dropoffDate)
+          const days    = booking.totalDays || Math.ceil((dropoff - pickup) / (1000*60*60*24))
+          const bookingIdShort = booking._id ? booking._id.toString().slice(-6).toUpperCase() : '------'
+          /* Look up the car that matches this booking's carId */
+          const thisCar = findCar(booking.carId)
+          const carName = thisCar ? (thisCar.name || '').toLowerCase() : ''
+        %>
+
+        <article
+          class="bk-card"
+          data-status="<%= booking.status %>"
+          data-id="<%= bookingIdShort.toLowerCase() %>"
+          data-name="<%= carName %>"
+          style="animation-delay: <%= i * 70 %>ms"
+        >
+
+          <!-- Status ribbon -->
+          <div class="bk-card-ribbon bk-card-ribbon--<%= booking.status %>">
+            <span class="ribbon-status">
+              <span class="ribbon-dot"></span>
+              <%= booking.status.charAt(0).toUpperCase() + booking.status.slice(1) %>
+            </span>
+            <span class="ribbon-id">#<%= bookingIdShort %></span>
+          </div>
+
+          <!-- Car visual -->
+          <div class="bk-card-visual">
+            <% if (thisCar && thisCar.imageUrl) { %>
+              <img src="<%= thisCar.imageUrl %>" alt="<%= thisCar.name %>" class="bk-car-img" loading="lazy" />
+            <% } else { %>
+              <div class="bk-car-placeholder">
+                <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12"/>
+                </svg>
+              </div>
+            <% } %>
+
+            <% if (thisCar && thisCar.category) { %>
+              <span class="bk-category-pill"><%= thisCar.category %></span>
+            <% } %>
+
+            <!-- Hover overlay -->
+            <div class="bk-card-hover-overlay">
+              <span class="overlay-id">Booking #<%= bookingIdShort %></span>
+            </div>
+          </div>
+
+          <!-- Car identity -->
+          <div class="bk-card-identity">
+            <% if (thisCar) { %>
+              <div class="bk-car-brand"><%= thisCar.brand || 'Unknown Brand' %></div>
+              <h3 class="bk-car-name"><%= thisCar.name || 'Car' %></h3>
+            <% } else { %>
+              <div class="bk-car-brand">Car ID</div>
+              <h3 class="bk-car-name"><%= booking.carId %></h3>
+            <% } %>
+          </div>
+
+          <!-- Specs row (only if car data available) -->
+          <% if (thisCar) { %>
+          <div class="bk-specs-row">
+            <% if (thisCar.seatCapacity) { %>
+            <div class="bk-spec">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/>
+              </svg>
+              <span><%= thisCar.seatCapacity %> seats</span>
+            </div>
+            <% } %>
+            <% if (thisCar.transmission) { %>
+            <div class="bk-spec">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75"/>
+              </svg>
+              <span><%= thisCar.transmission %></span>
+            </div>
+            <% } %>
+            <% if (thisCar.fuelType) { %>
+            <div class="bk-spec">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.362 5.214A8.252 8.252 0 0112 21 8.25 8.25 0 016.038 7.048 8.287 8.287 0 009 9.6a8.983 8.983 0 013.361-6.867 8.21 8.21 0 003 2.48z"/>
+              </svg>
+              <span><%= thisCar.fuelType %></span>
+            </div>
+            <% } %>
+          </div>
+          <% } %>
+
+          <!-- Date range -->
+          <div class="bk-dates">
+            <div class="bk-date-block">
+              <span class="bk-date-lbl">Pick Up</span>
+              <span class="bk-date-val">
+                <%= pickup.toLocaleDateString('en-IN', {day:'2-digit', month:'short', year:'numeric'}) %>
+              </span>
+            </div>
+            <div class="bk-date-arrow">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3"/>
+              </svg>
+            </div>
+            <div class="bk-date-block bk-date-block--right">
+              <span class="bk-date-lbl">Drop Off</span>
+              <span class="bk-date-val">
+                <%= dropoff.toLocaleDateString('en-IN', {day:'2-digit', month:'short', year:'numeric'}) %>
+              </span>
+            </div>
+          </div>
+
+          <!-- Duration + rate row -->
+          <div class="bk-duration-row">
+            <span class="bk-duration-badge">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+              <%= days %> day<%= days !== 1 ? 's' : '' %>
+            </span>
+            <% if (thisCar && thisCar.rentalPrice) { %>
+              <span class="bk-rate">₹<%= thisCar.rentalPrice %>/day</span>
+            <% } %>
+          </div>
+
+          <!-- Total price -->
+          <div class="bk-price-row">
+            <span class="bk-price-lbl">Total Amount</span>
+            <span class="bk-price-val">
+              ₹<%= (booking.totalPrice || 0).toLocaleString('en-IN') %>
+            </span>
+          </div>
+
+          <!-- Action buttons -->
+          <div class="bk-actions">
+
+            <% if (booking.status === 'confirmed') { %>
+
+              <!-- Pay Now -->
+              <a href="/bookings/<%= booking._id %>/pay" style="text-decoration:none; flex:1;">
+                <button type="button" class="bk-btn bk-btn--pay" style="width:100%">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z"/>
+                  </svg>
+                  Pay Now
+                </button>
+              </a>
+
+              <!-- Cancel -->
+              <form action="/bookings/<%= booking._id %>/cancel" method="POST" onsubmit="return confirmCancel(this)">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <button type="submit" class="bk-btn bk-btn--cancel">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                  </svg>
+                  Cancel
+                </button>
+              </form>
+
+            <% } else if (booking.status === 'paid') { %>
+
+              <!-- Paid success badge -->
+              <span class="bk-paid-badge">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/>
+                </svg>
+                Payment Complete
+              </span>
+
+              <!-- Rebook same car -->
+              <% if (thisCar) { %>
+                <a href="/book/<%= thisCar._id %>" class="bk-btn bk-btn--rebook">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"/>
+                  </svg>
+                  Rebook
+                </a>
+              <% } %>
+
+            <% } else if (booking.status === 'completed') { %>
+
+              <!-- Completed badge -->
+              <span class="bk-completed-badge">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/>
+                </svg>
+                Completed
+              </span>
+
+              <!-- Book Again -->
+              <% if (thisCar) { %>
+                <a href="/cars/<%= thisCar._id %>" class="bk-btn bk-btn--rebook">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"/>
+                  </svg>
+                  Book Again
+                </a>
+              <% } %>
+
+            <% } else { %>
+
+              <!-- Cancelled -->
+              <span class="bk-cancelled-badge">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+                Booking Cancelled
+              </span>
+
+            <% } %>
+
+          </div>
+
+        </article>
+        <% }) %>
+
+      <% } %>
+
+    </div>
+  </section>
+
+</main>
+<%- include('includes/Toast') %>
+<%- include('includes/Footer') %>
+
+<!-- ── Cancel Confirmation Modal ──────────────────────── -->
+<div class="bk-modal-overlay" id="cancelModal">
+  <div class="bk-modal">
+    <div class="bk-modal-icon">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ff7a7a" stroke-width="1.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"/>
+      </svg>
+    </div>
+    <h3 class="bk-modal-title">Cancel Booking?</h3>
+    <p class="bk-modal-text">This action cannot be undone. Your booking will be permanently cancelled.</p>
+    <div class="bk-modal-actions">
+      <button class="bk-modal-btn bk-modal-btn--ghost" onclick="closeModal()">Keep Booking</button>
+      <button class="bk-modal-btn bk-modal-btn--danger" id="confirmCancelBtn">Yes, Cancel</button>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* ══════════════════════════════════════════════════════
+     BOOKINGS PAGE — FULLY SELF-CONTAINED STYLES
+  ══════════════════════════════════════════════════════ */
+  .bookings-page * { box-sizing: border-box; }
+
+  .bookings-page {
+    background: #0a0a0f;
+    min-height: 100vh;
+    padding-top: 72px;
+    font-family: 'DM Sans', sans-serif;
+    color: #f0f0f5;
+  }
+
+  /* ── Hero ──────────────────────────────────────────── */
+  .bk-hero {
+    position: relative;
+    padding: 56px 64px 0;
+    overflow: hidden;
+  }
+  .bk-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 80% at 10% 50%, rgba(232,200,74,.07) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 60% at 90% 20%, rgba(100,80,200,.05) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .bk-hero-inner {
+    position: relative;
+    z-index: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-bottom: 40px;
+  }
+
+  .bk-hero-meta {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  .bk-tag {
+    display: inline-block;
+    padding: 4px 14px;
+    border-radius: 100px;
+    background: rgba(232,200,74,.12);
+    border: 1px solid rgba(232,200,74,.25);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: #e8c84a;
+  }
+
+  .bk-hero-stats { display: flex; align-items: center; gap: 20px; }
+  .hero-stat-div { width: 1px; height: 28px; background: #1e1e2e; }
+  .hero-stat-val {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    color: #f0f0f5;
+    line-height: 1;
+    display: block;
+  }
+  .hero-stat-lbl { font-size: 10px; color: #6b6b80; text-transform: uppercase; letter-spacing: .08em; }
+
+  .bk-hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(52px, 8vw, 96px);
+    letter-spacing: .04em;
+    color: #f0f0f5;
+    line-height: .95;
+    margin: 0;
+  }
+  .bk-hero-title span { color: #e8c84a; }
+
+  .bk-hero-sub { font-size: 15px; color: #6b6b80; margin-top: 14px; max-width: 480px; }
+
+  /* Ticker */
+  .bk-ticker {
+    border-top: 1px solid #1e1e2e;
+    border-bottom: 1px solid #1e1e2e;
+    overflow: hidden;
+    padding: 10px 0;
+    margin-top: 40px;
+    background: rgba(255,255,255,.01);
+  }
+  .ticker-track {
+    display: flex;
+    gap: 32px;
+    white-space: nowrap;
+    animation: tickerScroll 22s linear infinite;
+    width: max-content;
+  }
+  .ticker-track span { font-family: 'Bebas Neue', sans-serif; font-size: 13px; letter-spacing: .14em; color: #2a2a3a; }
+  .ticker-dot { color: #e8c84a !important; font-size: 8px !important; }
+  @keyframes tickerScroll {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  /* ── Filter bar ────────────────────────────────────── */
+  .bk-filters {
+    position: sticky;
+    top: 72px;
+    z-index: 50;
+    background: rgba(10,10,15,.92);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid #1e1e2e;
+    padding: 12px 64px;
+  }
+  .bk-filters-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  .filter-tabs { display: flex; gap: 4px; }
+  .filter-tab {
+    padding: 7px 16px;
+    border-radius: 8px;
+    border: none;
+    background: transparent;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: #6b6b80;
+    cursor: pointer;
+    transition: all .2s ease;
+  }
+  .filter-tab:hover { color: #f0f0f5; background: rgba(255,255,255,.04); }
+  .filter-tab.active {
+    background: rgba(232,200,74,.12);
+    border: 1px solid rgba(232,200,74,.2);
+    color: #e8c84a;
+    font-weight: 600;
+  }
+  .filter-search {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,.03);
+    border: 1px solid #1e1e2e;
+    border-radius: 8px;
+    padding: 8px 14px;
+    transition: border-color .2s;
+  }
+  .filter-search:focus-within { border-color: rgba(232,200,74,.4); }
+  .filter-search svg { stroke: #6b6b80; flex-shrink: 0; }
+  .filter-search input {
+    background: none;
+    border: none;
+    outline: none;
+    color: #f0f0f5;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    width: 180px;
+  }
+  .filter-search input::placeholder { color: #4a4a60; }
+
+  /* ── Grid ──────────────────────────────────────────── */
+  .bk-grid-section { padding: 40px 64px 80px; }
+  .bk-grid {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 24px;
+  }
+
+  /* Empty state */
+  .bk-empty {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 80px 40px;
+    border: 1px dashed #1e1e2e;
+    border-radius: 20px;
+    text-align: center;
+    gap: 14px;
+  }
+  .bk-empty-icon {
+    width: 80px; height: 80px;
+    border-radius: 20px;
+    background: rgba(255,255,255,.03);
+    border: 1px solid #1e1e2e;
+    display: grid;
+    place-items: center;
+    color: #3a3a50;
+  }
+  .bk-empty h3 { font-size: 20px; color: #f0f0f5; margin: 0; }
+  .bk-empty p  { font-size: 14px; color: #6b6b80; margin: 0; }
+  .bk-cta-btn {
+    margin-top: 8px;
+    padding: 12px 28px;
+    background: #e8c84a;
+    color: #0a0a0f;
+    border-radius: 10px;
+    font-weight: 700;
+    text-decoration: none;
+    font-size: 13px;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    transition: all .2s;
+  }
+  .bk-cta-btn:hover { background: #f0d45a; box-shadow: 0 0 24px rgba(232,200,74,.3); }
+
+  /* ── Booking Card ──────────────────────────────────── */
+  .bk-card {
+    background: #13131c;
+    border: 1px solid #1e1e2e;
+    border-radius: 20px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease;
+    animation: cardReveal .5s cubic-bezier(.4,0,.2,1) both;
+  }
+  @keyframes cardReveal {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .bk-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 60px rgba(0,0,0,.5);
+    border-color: rgba(232,200,74,.2);
+  }
+
+  /* Status ribbon */
+  .bk-card-ribbon {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+  }
+  .bk-card-ribbon--confirmed { background: rgba(75,255,165,.08);  border-bottom: 1px solid rgba(75,255,165,.15); }
+  .bk-card-ribbon--completed { background: rgba(100,120,255,.08); border-bottom: 1px solid rgba(100,120,255,.15); }
+  .bk-card-ribbon--cancelled { background: rgba(255,75,75,.08);   border-bottom: 1px solid rgba(255,75,75,.15); }
+  .bk-card-ribbon--paid      { background: rgba(232,200,74,.08);  border-bottom: 1px solid rgba(232,200,74,.2); }
+  /* fallback for any other status */
+  .bk-card-ribbon--pending   { background: rgba(255,165,0,.1);    border-bottom: 1px solid rgba(255,165,0,.15); }
+
+  .ribbon-status { display: flex; align-items: center; gap: 7px; }
+  .ribbon-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    display: inline-block;
+    animation: ribbonPulse 2s ease-in-out infinite;
+  }
+  .bk-card-ribbon--confirmed .ribbon-dot { background: #4bffa5; }
+  .bk-card-ribbon--completed .ribbon-dot { background: #6478ff; animation: none; }
+  .bk-card-ribbon--cancelled .ribbon-dot { background: #ff4b4b; animation: none; }
+  .bk-card-ribbon--paid      .ribbon-dot { background: #e8c84a; animation: none; }
+  .bk-card-ribbon--pending   .ribbon-dot { background: #ffa500; }
+  @keyframes ribbonPulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: .4; transform: scale(.65); }
+  }
+  .bk-card-ribbon--confirmed .ribbon-status { color: #4bffa5; }
+  .bk-card-ribbon--completed .ribbon-status { color: #6478ff; }
+  .bk-card-ribbon--cancelled .ribbon-status { color: #ff4b4b; }
+  .bk-card-ribbon--paid      .ribbon-status { color: #e8c84a; }
+  .bk-card-ribbon--pending   .ribbon-status { color: #ffa500; }
+  .ribbon-id { color: #3a3a50; font-size: 10px; }
+
+  /* Visual */
+  .bk-card-visual {
+    position: relative;
+    height: 160px;
+    background: linear-gradient(135deg, #0e0e18, #161626);
+    overflow: hidden;
+  }
+  .bk-car-img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    filter: brightness(.85);
+    transition: transform .4s ease;
+  }
+  .bk-card:hover .bk-car-img { transform: scale(1.04); }
+  .bk-car-placeholder { width: 100%; height: 100%; display: grid; place-items: center; color: #2a2a3a; }
+
+  .bk-category-pill {
+    position: absolute;
+    bottom: 10px; left: 12px;
+    padding: 4px 10px;
+    background: rgba(10,10,15,.8);
+    backdrop-filter: blur(8px);
+    border: 1px solid #1e1e2e;
+    border-radius: 100px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: #9999b0;
+  }
+
+  .bk-card-hover-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(10,10,15,.65);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity .3s ease;
+  }
+  .bk-card:hover .bk-card-hover-overlay { opacity: 1; }
+  .overlay-id {
+    padding: 8px 18px;
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #f0f0f5;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+  }
+
+  /* Identity */
+  .bk-card-identity { padding: 16px 16px 0; }
+  .bk-car-brand { font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #e8c84a; margin-bottom: 3px; }
+  .bk-car-name { font-family: 'Bebas Neue', sans-serif; font-size: 26px; letter-spacing: .04em; color: #f0f0f5; margin: 0; line-height: 1; }
+
+  /* Specs */
+  .bk-specs-row { display: flex; gap: 12px; padding: 12px 16px; border-bottom: 1px solid #1e1e2e; flex-wrap: wrap; }
+  .bk-spec { display: flex; align-items: center; gap: 5px; font-size: 11px; color: #6b6b80; }
+  .bk-spec svg { stroke: #3a3a50; flex-shrink: 0; }
+
+  /* Dates */
+  .bk-dates { display: flex; align-items: center; padding: 14px 16px; gap: 8px; border-bottom: 1px solid #1e1e2e; }
+  .bk-date-block { display: flex; flex-direction: column; gap: 3px; flex: 1; }
+  .bk-date-block--right { text-align: right; align-items: flex-end; }
+  .bk-date-lbl { font-size: 9px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #4a4a60; }
+  .bk-date-val { font-size: 13px; font-weight: 600; color: #c0c0d0; }
+  .bk-date-arrow { color: #2a2a3a; flex-shrink: 0; }
+
+  /* Duration */
+  .bk-duration-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 16px; border-bottom: 1px solid #1e1e2e; }
+  .bk-duration-badge {
+    display: flex; align-items: center; gap: 5px;
+    padding: 4px 10px;
+    background: rgba(255,255,255,.03);
+    border: 1px solid #1e1e2e;
+    border-radius: 100px;
+    font-size: 11px; font-weight: 600; color: #9999b0;
+  }
+  .bk-duration-badge svg { stroke: #6b6b80; }
+  .bk-rate { font-size: 12px; color: #4a4a60; }
+
+  /* Price */
+  .bk-price-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    background: rgba(232,200,74,.03);
+    border-bottom: 1px solid rgba(232,200,74,.08);
+  }
+  .bk-price-lbl { font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: #6b6b80; }
+  .bk-price-val { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: .04em; color: #e8c84a; line-height: 1; }
+
+  /* Actions */
+  .bk-actions { display: flex; gap: 8px; padding: 14px 16px; margin-top: auto; }
+
+  .bk-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 11px 16px;
+    border-radius: 9px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .04em;
+    cursor: pointer;
+    text-decoration: none;
+    border: none;
+    transition: all .2s ease;
+    white-space: nowrap;
+  }
+  .bk-btn svg { flex-shrink: 0; stroke: currentColor; }
+
+  .bk-btn--pay { flex: 1; background: #e8c84a; color: #0a0a0f; text-transform: uppercase; }
+  .bk-btn--pay svg { stroke: #0a0a0f; }
+  .bk-btn--pay:hover { background: #f0d45a; box-shadow: 0 0 20px rgba(232,200,74,.3); }
+  .bk-btn--pay:active { transform: scale(.98); }
+
+  .bk-btn--cancel { background: rgba(255,75,75,.1); border: 1px solid rgba(255,75,75,.2); color: #ff7a7a; padding: 11px 14px; }
+  .bk-btn--cancel:hover { background: rgba(255,75,75,.2); border-color: rgba(255,75,75,.4); }
+
+  .bk-btn--rebook { flex: 1; background: rgba(100,120,255,.1); border: 1px solid rgba(100,120,255,.2); color: #8090ff; }
+  .bk-btn--rebook:hover { background: rgba(100,120,255,.18); }
+
+  .bk-cancelled-badge {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 11px 16px;
+    background: rgba(255,255,255,.02);
+    border: 1px solid #1e1e2e;
+    border-radius: 9px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #3a3a50;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+  }
+
+  .bk-paid-badge {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 11px 16px;
+    background: rgba(232,200,74,.08);
+    border: 1px solid rgba(232,200,74,.2);
+    border-radius: 9px;
+    font-size: 11px;
+    font-weight: 700;
+    color: #e8c84a;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+  }
+
+  .bk-completed-badge {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 11px 16px;
+    background: rgba(100,120,255,.08);
+    border: 1px solid rgba(100,120,255,.2);
+    border-radius: 9px;
+    font-size: 11px;
+    font-weight: 700;
+    color: #6478ff;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+  }
+
+  /* Filter count pill */
+  .filter-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    background: rgba(255,255,255,.06);
+    border-radius: 100px;
+    font-size: 10px;
+    font-weight: 700;
+    color: #6b6b80;
+    margin-left: 4px;
+  }
+  .filter-tab.active .filter-count {
+    background: rgba(232,200,74,.2);
+    color: #e8c84a;
+  }
+
+  /* ── Modal ─────────────────────────────────────────── */
+  .bk-modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,.75);
+    backdrop-filter: blur(6px);
+    z-index: 1000;
+    display: flex; align-items: center; justify-content: center;
+    padding: 24px;
+    opacity: 0; pointer-events: none;
+    transition: opacity .25s ease;
+  }
+  .bk-modal-overlay.active { opacity: 1; pointer-events: all; }
+  .bk-modal {
+    background: #13131c;
+    border: 1px solid #1e1e2e;
+    border-radius: 20px;
+    padding: 36px 32px;
+    max-width: 400px; width: 100%;
+    text-align: center;
+    box-shadow: 0 40px 80px rgba(0,0,0,.6);
+    transform: scale(.95) translateY(12px);
+    transition: transform .25s ease;
+  }
+  .bk-modal-overlay.active .bk-modal { transform: scale(1) translateY(0); }
+  .bk-modal-icon {
+    width: 64px; height: 64px; border-radius: 16px;
+    background: rgba(255,75,75,.08); border: 1px solid rgba(255,75,75,.2);
+    display: grid; place-items: center; margin: 0 auto 20px;
+  }
+  .bk-modal-title { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: .04em; color: #f0f0f5; margin: 0 0 10px; }
+  .bk-modal-text  { font-size: 14px; color: #6b6b80; margin: 0 0 28px; line-height: 1.6; }
+  .bk-modal-actions { display: flex; gap: 10px; }
+  .bk-modal-btn {
+    flex: 1; padding: 13px 16px; border-radius: 10px;
+    font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 700;
+    cursor: pointer; border: none; transition: all .2s; letter-spacing: .04em;
+  }
+  .bk-modal-btn--ghost { background: rgba(255,255,255,.04); border: 1px solid #1e1e2e; color: #9999b0; }
+  .bk-modal-btn--ghost:hover { background: rgba(255,255,255,.08); color: #f0f0f5; }
+  .bk-modal-btn--danger { background: rgba(255,75,75,.15); border: 1px solid rgba(255,75,75,.3); color: #ff7a7a; text-transform: uppercase; }
+  .bk-modal-btn--danger:hover { background: rgba(255,75,75,.25); }
+
+  /* Filter hide */
+  .bk-card.hidden { display: none; }
+
+  /* ── Responsive ────────────────────────────────────── */
+  @media (max-width: 1024px) {
+    .bk-hero, .bk-grid-section, .bk-filters { padding-left: 32px; padding-right: 32px; }
+  }
+  @media (max-width: 768px) {
+    .bk-hero { padding: 40px 20px 0; }
+    .bk-grid-section { padding: 24px 20px 60px; }
+    .bk-filters { padding: 10px 20px; }
+    .bk-filters-inner { flex-direction: column; align-items: stretch; gap: 10px; }
+    .filter-search { flex: 1; }
+    .filter-search input { width: 100%; }
+    .bk-grid { grid-template-columns: 1fr; }
+  }
+</style>
+
+<script>
+  /* ── Filter tabs ─────────────────────────────────── */
+  const filterTabs   = document.querySelectorAll('.filter-tab');
+  const bookingCards = document.querySelectorAll('.bk-card');
+  const searchInput  = document.getElementById('searchInput');
+
+  function applyFilters() {
+    const activeStatus = document.querySelector('.filter-tab.active').dataset.filter;
+    const q = searchInput.value.toLowerCase().trim();
+
+    bookingCards.forEach(card => {
+      const statusOk = activeStatus === 'all' || card.dataset.status === activeStatus;
+      const searchOk = !q || card.dataset.id.includes(q) || card.dataset.name.includes(q);
+      card.classList.toggle('hidden', !(statusOk && searchOk));
+    });
+  }
+
+  filterTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      filterTabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      applyFilters();
+    });
+  });
+
+  searchInput.addEventListener('input', applyFilters);
+
+  /* ── Cancel modal ────────────────────────────────── */
+  let pendingForm = null;
+
+  function confirmCancel(form) {
+    pendingForm = form;
+    document.getElementById('cancelModal').classList.add('active');
+    return false; // prevent immediate submit
+  }
+
+  function closeModal() {
+    document.getElementById('cancelModal').classList.remove('active');
+    pendingForm = null;
+  }
+
+  document.getElementById('confirmCancelBtn').addEventListener('click', () => {
+    if (pendingForm) pendingForm.submit();
+  });
+
+  document.getElementById('cancelModal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+</script>

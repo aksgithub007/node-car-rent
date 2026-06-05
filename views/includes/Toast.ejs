@@ -1,0 +1,72 @@
+<% if (locals.flashError || locals.flashSuccess) { %>
+  <div id="toast" class="toast <%= flashError ? 'toast--error' : 'toast--success' %>">
+    <div class="toast-icon">
+      <% if (flashError) { %>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0
+            2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898
+            0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"/>
+        </svg>
+      <% } else { %>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+      <% } %>
+    </div>
+    <span class="toast-msg"><%= flashError || flashSuccess %></span>
+    <button class="toast-close" onclick="this.parentElement.remove()">✕</button>
+  </div>
+<% } %>
+
+<style>
+  .toast {
+    position: fixed;
+    top: 24px;
+    right: 24px;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 18px;
+    border-radius: 12px;
+    min-width: 280px;
+    max-width: 420px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.35);
+    animation: toastIn 0.35s cubic-bezier(0.34,1.56,0.64,1) forwards;
+    border: 1px solid transparent;
+  }
+  .toast--error  { background: rgba(40,10,10,0.95); border-color: rgba(255,80,80,0.35); color: #ff9a9a; }
+  .toast--success{ background: rgba(10,30,15,0.95); border-color: rgba(80,200,120,0.35); color: #7defa8; }
+
+  .toast-icon svg { width: 20px; height: 20px; flex-shrink: 0; stroke: currentColor; }
+  .toast-msg  { flex: 1; line-height: 1.4; }
+  .toast-close {
+    background: none; border: none; cursor: pointer;
+    color: currentColor; opacity: 0.5; font-size: 13px;
+    padding: 2px 4px; line-height: 1;
+  }
+  .toast-close:hover { opacity: 1; }
+
+  @keyframes toastIn {
+    from { opacity: 0; transform: translateX(60px) scale(0.9); }
+    to   { opacity: 1; transform: translateX(0)    scale(1);   }
+  }
+</style>
+
+<script>
+  // Auto-dismiss after 4 seconds
+  setTimeout(() => {
+    const t = document.getElementById('toast');
+    if (t) {
+      t.style.transition = 'opacity 0.4s, transform 0.4s';
+      t.style.opacity = '0';
+      t.style.transform = 'translateX(60px)';
+      setTimeout(() => t.remove(), 400);
+    }
+  }, 4000);
+</script>

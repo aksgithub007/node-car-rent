@@ -1,0 +1,837 @@
+<%- include('includes/Head') %>
+
+  <%- include('includes/Navigation') %>
+
+  <!-- ─── Page Header ──────────────────────────────────────────── -->
+  <section class="page-header">
+    <div class="page-header-inner">
+
+      <!-- Logo + Back row -->
+      <div class="page-header-top">
+        <a href="/" class="auth-logo">
+          <div class="logo-mark">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M3 11l1.5-4.5A2 2 0 016.4 5h11.2a2 2 0 011.9 1.5L21 11M3 11v5a1 1 0 001 1h1a2 2 0 004 0h6a2 2 0 004 0h1a1 1 0 001-1v-5M3 11h18M7 17a1 1 0 110-2 1 1 0 010 2zm10 0a1 1 0 110-2 1 1 0 010 2z"/>
+            </svg>
+          </div>
+          <span class="logo-text">Drive<span>Elite</span></span>
+        </a>
+        <a href="/admin/cars" class="back-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"/>
+          </svg>
+          Back to Cars
+        </a>
+      </div>
+
+      <div class="page-header-meta">
+        <span class="auth-tag">Fleet Management</span>
+      </div>
+      <h1 class="page-title">Add New <span>Car</span></h1>
+      <p class="page-sub">Register a new vehicle to the DriveElite rental fleet</p>
+    </div>
+  </section>
+
+  <!-- ─── Form Section ─────────────────────────────────────────── -->
+  <main class="add-car-main">
+
+    <div class="auth-glow auth-glow--left"></div>
+    <div class="auth-glow auth-glow--right"></div>
+
+    <div class="add-car-layout">
+
+      <!-- ─── Form Card ──────────────────────────────────────── -->
+      <div class="add-car-card">
+
+        <% if (locals.error) { %>
+          <div class="auth-alert auth-alert--error" style="margin-bottom:8px;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"/>
+            </svg>
+            <span><%= error %></span>
+          </div>
+        <% } %>
+
+        <form action="<%= isEdit ? '/admin/edit-car' : '/admin/add-car' %>" method="POST" class="car-form" novalidate>
+  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+          <!-- ── Section: Classification ─────────────────────── -->
+          <div class="form-section">
+            <div class="form-section-head">
+              <span class="section-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z"/>
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z"/>
+                </svg>
+              </span>
+              <div>
+                <h3 class="section-title">Classification</h3>
+                <p class="section-sub">Category and identity of the vehicle</p>
+              </div>
+            </div>
+
+            <div class="field-grid field-grid--3">
+
+              <!-- Category -->
+              <div class="field-group">
+                <label class="field-label" for="category">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z"/>
+                  </svg>
+                  Category
+                </label>
+                <div class="field-wrap">
+                  <select id="category"  name="category" class="field-select" required>
+                    
+                     <option value="" disabled <%= !isEdit ? 'selected' : '' %>>Select category</option>
+                   <option value="sport"       <%= (isEdit && car && car.category === 'sport')       ? 'selected' : '' %>>Sport</option>
+  <option value="luxury"      <%= (isEdit && car && car.category === 'luxury')      ? 'selected' : '' %>>Luxury</option>
+  <option value="electrical"  <%= (isEdit && car && car.category === 'electrical')  ? 'selected' : '' %>>Electrical</option>
+  <option value="suv"         <%= (isEdit && car && car.category === 'suv')         ? 'selected' : '' %>>SUV</option>
+  <option value="sedan"       <%= (isEdit && car && car.category === 'sedan')       ? 'selected' : '' %>>Sedan</option>
+  <option value="hatchback"   <%= (isEdit && car && car.category === 'hatchback')   ? 'selected' : '' %>>Hatchback</option>
+  <option value="convertible" <%= (isEdit && car && car.category === 'convertible') ? 'selected' : '' %>>Convertible</option>
+  <option value="truck"       <%= (isEdit && car && car.category === 'truck')       ? 'selected' : '' %>>Truck</option>
+  <option value="van"         <%= (isEdit && car && car.category === 'van')         ? 'selected' : '' %>>Van</option>
+
+                  </select>
+                </div>
+              </div>
+
+              <!-- Car Name -->
+              <div class="field-group">
+                <label class="field-label" for="carName">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12"/>
+                  </svg>
+                  Car Name
+                </label>
+                <div class="field-wrap">
+                  <input
+                    type="text"
+                    id="carName"
+                    value="<%= isEdit && car ? car.name : '' %>"
+                    name="carName"
+                    class="field-input"
+                    placeholder="e.g. 911 Turbo S"
+                    required
+                  />
+                </div>
+              </div>
+
+              <!-- Brand Name -->
+              <div class="field-group">
+                <label class="field-label" for="brandName">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21"/>
+                  </svg>
+                  Brand Name
+                </label>
+                <div class="field-wrap">
+                  <input
+                    type="text"
+                    id="brandName"
+                    name="brandName"
+                    value="<%= isEdit && car ? car.brand : '' %>"
+                    class="field-input"
+                    placeholder="e.g. Porsche"
+                    required
+                  />
+                </div>
+              </div>
+
+            </div><!-- /.field-grid--3 -->
+          </div><!-- /.form-section -->
+
+          <!-- ── Section: Specifications ─────────────────────── -->
+          <div class="form-section">
+            <div class="form-section-head">
+              <span class="section-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M11.42 15.17L17.25 21A2.652 2.652 0 0021 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 11-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 004.486-6.336l-3.276 3.277a3.004 3.004 0 01-2.25-2.25l3.276-3.276a4.5 4.5 0 00-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085m-1.745 1.437L5.909 7.5H4.5L2.25 3.75l1.5-1.5L7.5 4.5v1.409l4.26 4.26m-1.745 1.437l1.745-1.437m6.615 8.206L15.75 15.75M4.867 19.125h.008v.008h-.008v-.008z"/>
+                </svg>
+              </span>
+              <div>
+                <h3 class="section-title">Specifications</h3>
+                <p class="section-sub">Technical details and capabilities</p>
+              </div>
+            </div>
+
+            <div class="field-grid field-grid--3">
+
+              <!-- Seat Capacity -->
+              <div class="field-group">
+                <label class="field-label" for="seatCapacity">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"/>
+                  </svg>
+                  Seat Capacity
+                </label>
+                <div class="field-wrap">
+                  <select id="seatCapacity"  name="seatCapacity" class="field-select" required>
+                    <option value="" disabled <%= !isEdit ? 'selected' : '' %>>Select seat capacity</option>
+                    <option value="2" <%= (isEdit && car && car.seatCapacity === '2') ? 'selected' : '' %>>2 Seats</option>
+                    <option value="4" <%= (isEdit && car && car.seatCapacity === '4') ? 'selected' : '' %>>4 Seats</option>
+                    <option value="5" <%= (isEdit && car && car.seatCapacity === '5') ? 'selected' : '' %>>5 Seats</option>
+                    <option value="6" <%= (isEdit && car && car.seatCapacity === '6') ? 'selected' : '' %>>6 Seats</option>
+                    <option value="7" <%= (isEdit && car && car.seatCapacity === '7') ? 'selected' : '' %>>7 Seats</option>
+                    <option value="8" <%= (isEdit && car && car.seatCapacity === '8') ? 'selected' : '' %>>8 Seats</option>
+                    <option value="9" <%= (isEdit && car && car.seatCapacity === '9') ? 'selected' : '' %>>9+ Seats</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Transmission -->
+              <div class="field-group">
+                <label class="field-label" for="transmission">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75"/>
+                  </svg>
+                  Transmission
+                </label>
+                <div class="field-wrap">
+                  <select id="transmission"  name="transmission" class="field-select" required>
+                   <option value="" disabled <%= !isEdit ? 'selected' : '' %>>Select transmission</option>
+                    <option value="automatic" <%= (isEdit && car && car.transmission === 'automatic') ? 'selected' : '' %>>Automatic</option>
+                    <option value="manual" <%= (isEdit && car && car.transmission === 'manual') ? 'selected' : '' %>>Manual</option>
+                    <option value="semi-auto" <%= (isEdit && car && car.transmission === 'semi-auto') ? 'selected' : '' %>>Semi-Automatic</option>
+                    <option value="cvt" <%= (isEdit && car && car.transmission === 'cvt') ? 'selected' : '' %>>CVT</option>
+                    <option value="dct" <%= (isEdit && car && car.transmission === 'dct') ? 'selected' : '' %>>DCT (Dual Clutch)</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Fuel Type -->
+              <div class="field-group">
+                <label class="field-label" for="fuelType">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.362 5.214A8.252 8.252 0 0112 21 8.25 8.25 0 016.038 7.048 8.287 8.287 0 009 9.6a8.983 8.983 0 013.361-6.867 8.21 8.21 0 003 2.48z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 18a3.75 3.75 0 00.495-7.467 5.99 5.99 0 00-1.925 3.546 5.974 5.974 0 01-2.133-1A3.75 3.75 0 0012 18z"/>
+                  </svg>
+                  Fuel Type
+                </label>
+                <div class="field-wrap">
+                  <select id="fuelType"  name="fuelType" class="field-select" required>
+                    <option value="" disabled <%= !isEdit ? 'selected' : '' %>>Select fuel</option>
+                    <option value="petrol" <%= (isEdit && car && car.fuelType === 'petrol') ? 'selected' : '' %>>Petrol</option>
+                    <option value="diesel" <%= (isEdit && car && car.fuelType === 'diesel') ? 'selected' : '' %>>Diesel</option>
+                    <option value="electric" <%= (isEdit && car && car.fuelType === 'electric') ? 'selected' : '' %>>Electric</option>
+                    <option value="hybrid" <%= (isEdit && car && car.fuelType === 'hybrid') ? 'selected' : '' %>>Hybrid</option>
+                    <option value="plugin-hybrid" <%= (isEdit && car && car.fuelType === 'plugin-hybrid') ? 'selected' : '' %>>Plug-in Hybrid</option>
+                    <option value="cng" <%= (isEdit && car && car.fuelType === 'cng') ? 'selected' : '' %>>CNG</option>
+                  </select>
+                </div>
+              </div>
+
+            </div><!-- /.field-grid--3 -->
+          </div><!-- /.form-section -->
+
+          <!-- ── Section: Pricing & Media ────────────────────── -->
+          <div class="form-section">
+            <div class="form-section-head">
+              <span class="section-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z"/>
+                </svg>
+              </span>
+              <div>
+                <h3 class="section-title">Pricing & Media</h3>
+                <p class="section-sub">Rental rate and vehicle image</p>
+              </div>
+            </div>
+
+            <div class="field-grid field-grid--2">
+
+              <!-- Rent per Day -->
+              <div class="field-group">
+                <label class="field-label" for="rentPerDay">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                  Rent Per Day (₹)
+                </label>
+                <div class="field-wrap field-wrap--prefix">
+                  <span class="field-prefix">₹</span>
+                  <input
+                    type="number"
+                    id="rentPerDay"
+                    value="<%= isEdit && car ? car.rentalPrice : '' %>"
+                    name="rentPerDay"
+                    class="field-input field-input--prefixed"
+                    placeholder="2500"
+                    min="0"
+                    step="50"
+                    required
+                  />
+                </div>
+              </div>
+
+              <!-- Image URL -->
+              <div class="field-group">
+                <label class="field-label" for="imageUrl">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"/>
+                  </svg>
+                  Image URL
+                </label>
+                <div class="field-wrap">
+                  <input
+                    type="url"
+                    id="imageUrl"
+                    value="<%= isEdit && car ? car.imageUrl : '' %>"
+                    name="imageUrl"
+                    class="field-input"
+                    placeholder="https://example.com/car.png"
+                  />
+                </div>
+              </div>
+
+            </div><!-- /.field-grid--2 -->
+
+            <!-- Image Preview -->
+            <div class="image-preview-wrap" id="imgPreviewWrap" style="display:none">
+              <div class="image-preview-inner">
+                <img id="imgPreview" src="" alt="Car preview" class="image-preview" />
+                <button type="button" class="img-clear-btn" onclick="clearImagePreview()" aria-label="Clear preview">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <input type="hidden" name="carId" value="<%= isEdit && car ? car._id : '' %>" />
+
+          </div><!-- /.form-section -->
+
+          <!-- ── Action Buttons ──────────────────────────────── -->
+          <div class="form-actions">
+            <a href="/cars" class="auth-btn auth-btn--ghost">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3"/>
+              </svg>
+              Cancel
+            </a>
+            <button type="reset" class="auth-btn auth-btn--reset" onclick="resetCarForm()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"/>
+              </svg>
+              Reset
+            </button>
+            <button type="submit" class="auth-btn auth-btn--primary">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
+              </svg>
+              <%= isEdit ? 'Update Car' : 'Add Car' %>
+            </button>
+          </div>
+
+        </form>
+      </div><!-- /.add-car-card -->
+
+    </div><!-- /.add-car-layout -->
+  </main>
+<%- include('includes/Toast') %>
+  <%- include('includes/Footer') %>
+
+  <style>
+    /* ─── Animations ─────────────────────────────────────────── */
+    @keyframes authIn {
+      from { opacity: 0; transform: translateY(32px) scale(0.98); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* ─── Tag (shared style) ─────────────────────────────────── */
+    .auth-tag {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 100px;
+      background: var(--accent-dim);
+      border: 1px solid rgba(232,200,74,0.25);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    /* ─── Glow decorations ───────────────────────────────────── */
+    .auth-glow {
+      position: fixed;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 0;
+      filter: blur(80px);
+    }
+    .auth-glow--left {
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(232,200,74,0.07) 0%, transparent 70%);
+      top: 10%; left: -100px;
+    }
+    .auth-glow--right {
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(100,80,200,0.06) 0%, transparent 70%);
+      bottom: 10%; right: -80px;
+    }
+
+    /* ─── Alert ──────────────────────────────────────────────── */
+    .auth-alert {
+      display: flex; align-items: center; gap: 10px;
+      padding: 12px 16px; border-radius: 10px; font-size: 13px;
+    }
+    .auth-alert--error {
+      background: rgba(255,75,75,0.1);
+      border: 1px solid rgba(255,75,75,0.3);
+      color: #ff7a7a;
+    }
+    .auth-alert svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+    /* ─── Page Header ────────────────────────────────────────── */
+    .page-header {
+      position: relative;
+      z-index: 10;
+      padding: 100px 64px 0;
+    }
+
+    .page-header-inner {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding-bottom: 32px;
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    /* Logo (same as signin) */
+    .auth-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+
+    .logo-mark {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: var(--accent);
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+    }
+
+    .logo-mark svg {
+      width: 20px;
+      height: 20px;
+      fill: none;
+      stroke: var(--bg);
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .logo-text {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 22px;
+      letter-spacing: 0.08em;
+      color: var(--text-primary);
+    }
+
+    .logo-text span { color: var(--accent); }
+
+    .page-header-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+    }
+
+    .page-header-meta {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 12px;
+    }
+
+    .back-link {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color var(--transition);
+    }
+
+    .back-link svg { width: 14px; height: 14px; stroke: currentColor; }
+    .back-link:hover { color: var(--text-primary); }
+
+    .page-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 52px;
+      letter-spacing: 0.04em;
+      color: var(--text-primary);
+      line-height: 1;
+    }
+
+    .page-title span { color: var(--accent); }
+
+    .page-sub {
+      margin-top: 8px;
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    /* ─── Main ───────────────────────────────────────────────── */
+    .add-car-main {
+      position: relative;
+      z-index: 1;
+      padding: 40px 64px 80px;
+    }
+
+    .add-car-layout {
+      max-width: 1040px;
+      margin: 0 auto;
+    }
+
+    /* ─── Form Card ──────────────────────────────────────────── */
+    .add-car-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.35);
+      animation: authIn 0.5s cubic-bezier(0.4,0,0.2,1) both;
+    }
+
+    /* ─── Form Sections ──────────────────────────────────────── */
+    .form-section {
+      padding: 32px 40px;
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    .form-section:last-of-type { border-bottom: none; }
+
+    .form-section-head {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    .section-icon {
+      width: 40px;
+      height: 40px;
+      min-width: 40px;
+      min-height: 40px;
+      border-radius: 10px;
+      background: var(--accent-dim);
+      border: 1px solid rgba(232,200,74,0.2);
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+
+    .section-icon svg {
+      width: 18px !important;
+      height: 18px !important;
+      max-width: 18px;
+      max-height: 18px;
+      stroke: var(--accent);
+      flex-shrink: 0;
+    }
+
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 22px;
+      letter-spacing: 0.06em;
+      color: var(--text-primary);
+      line-height: 1;
+    }
+
+    .section-sub {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* ─── Field Groups ───────────────────────────────────────── */
+    .field-group { display: flex; flex-direction: column; gap: 8px; }
+
+    .field-label {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-label);
+    }
+
+    .field-label svg { width: 13px; height: 13px; stroke: var(--text-muted); }
+
+    .field-wrap { position: relative; }
+
+    .field-input {
+      width: 100%;
+      padding: 13px 16px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      color: var(--text-primary);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      outline: none;
+      transition: border-color var(--transition), background var(--transition), box-shadow var(--transition);
+    }
+
+    .field-input::placeholder { color: var(--text-muted); }
+
+    .field-input:focus {
+      border-color: rgba(232,200,74,0.5);
+      background: rgba(232,200,74,0.03);
+      box-shadow: 0 0 0 3px rgba(232,200,74,0.08);
+    }
+
+    .field-select {
+      width: 100%;
+      padding: 13px 16px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      color: var(--text-primary);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      outline: none;
+      cursor: pointer;
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b6b80' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 16px center;
+      padding-right: 44px;
+      transition: border-color var(--transition), background-color var(--transition), box-shadow var(--transition);
+    }
+
+    .field-select:focus {
+      border-color: rgba(232,200,74,0.5);
+      background-color: rgba(232,200,74,0.03);
+      box-shadow: 0 0 0 3px rgba(232,200,74,0.08);
+    }
+
+    .field-select option { background: var(--surface); color: var(--text-primary); }
+
+    /* ─── Buttons ────────────────────────────────────────────── */
+    .auth-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 14px 20px;
+      border-radius: var(--radius-btn);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all var(--transition);
+      border: none;
+    }
+
+    .auth-btn svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+    .auth-btn--primary {
+      background: var(--accent);
+      color: var(--bg);
+      text-transform: uppercase;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .auth-btn--primary::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(255,255,255,0);
+      transition: background var(--transition);
+    }
+
+    .auth-btn--primary:hover::before { background: rgba(255,255,255,0.12); }
+    .auth-btn--primary:active { transform: scale(0.98); }
+
+    .auth-btn--ghost {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--card-border);
+      color: var(--text-label);
+      font-size: 13px;
+    }
+
+    .auth-btn--ghost:hover {
+      background: rgba(255,255,255,0.06);
+      border-color: rgba(255,255,255,0.12);
+      color: var(--text-primary);
+    }
+
+    .auth-btn--ghost svg { stroke: currentColor; }
+
+    /* ─── Field Grids ────────────────────────────────────────── */
+    .field-grid { display: grid; gap: 20px; }
+    .field-grid--2 { grid-template-columns: repeat(2, 1fr); }
+    .field-grid--3 { grid-template-columns: repeat(3, 1fr); }
+
+    /* ─── Prefix input ───────────────────────────────────────── */
+    .field-wrap--prefix { display: flex; align-items: center; }
+
+    .field-prefix {
+      position: absolute;
+      left: 14px;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--accent);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .field-input--prefixed { padding-left: 30px; }
+
+    /* ─── Image Preview ──────────────────────────────────────── */
+    .image-preview-wrap {
+      margin-top: 16px;
+      animation: authIn 0.3s ease both;
+    }
+
+    .image-preview-inner {
+      position: relative;
+      display: inline-block;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--card-border);
+      background: linear-gradient(135deg, #0e0e18 0%, #181826 100%);
+    }
+
+    .image-preview {
+      display: block;
+      max-height: 180px;
+      max-width: 100%;
+      object-fit: contain;
+      padding: 16px;
+      filter: drop-shadow(0 4px 16px rgba(0,0,0,0.5));
+    }
+
+    .img-clear-btn {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: rgba(0,0,0,0.6);
+      border: 1px solid rgba(255,255,255,0.1);
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+
+    .img-clear-btn:hover { background: rgba(255,75,75,0.4); }
+    .img-clear-btn svg { width: 12px; height: 12px; stroke: white; }
+
+    /* ─── Actions ────────────────────────────────────────────── */
+    .form-actions {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 12px;
+      padding: 24px 40px;
+      background: rgba(255,255,255,0.01);
+      border-top: 1px solid var(--card-border);
+    }
+
+    .form-actions .auth-btn--primary { width: auto; padding: 14px 32px; }
+    .form-actions .auth-btn--ghost   { width: auto; }
+    .form-actions .auth-btn--reset   {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 20px;
+      border-radius: var(--radius-btn);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid var(--card-border);
+      background: rgba(255,255,255,0.03);
+      color: var(--text-muted);
+      transition: all var(--transition);
+    }
+
+    .form-actions .auth-btn--reset svg { width: 15px; height: 15px; stroke: currentColor; }
+
+    .form-actions .auth-btn--reset:hover {
+      background: rgba(255,75,75,0.08);
+      border-color: rgba(255,75,75,0.3);
+      color: #ff7a7a;
+    }
+
+    /* ─── Responsive ─────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .field-grid--3 { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 768px) {
+      .page-header { padding: 100px 24px 0; }
+      .page-header-top { flex-direction: column; align-items: flex-start; gap: 12px; }
+      .add-car-main { padding: 32px 24px 60px; }
+      .form-section { padding: 24px 24px; }
+      .form-actions { padding: 20px 24px; flex-wrap: wrap; }
+      .form-actions .auth-btn--primary { order: -1; width: 100%; }
+      .field-grid--2,
+      .field-grid--3 { grid-template-columns: 1fr; }
+      .page-title { font-size: 38px; }
+    }
+  </style>
+
+  <script>
+    const imgUrlInput = document.getElementById('imageUrl');
+const imgPreviewWrap = document.getElementById('imgPreviewWrap');
+const imgPreview = document.getElementById('imgPreview');
+
+let previewTimeout;
+
+imgUrlInput.addEventListener('input', function () {
+  clearTimeout(previewTimeout);
+  const url = this.value.trim();
+  if (!url) {
+    imgPreviewWrap.style.display = 'none';
+    return;
+  }
+  previewTimeout = setTimeout(() => {
+    imgPreview.src = url;
+    imgPreview.onload = () => { imgPreviewWrap.style.display = 'block'; };
+    imgPreview.onerror = () => { imgPreviewWrap.style.display = 'none'; };
+  }, 600);
+});
+
+function clearImagePreview() {
+  imgUrlInput.value = '';
+  imgPreviewWrap.style.display = 'none';
+  imgPreview.src = '';
+}
+
+function resetCarForm() {
+  imgPreviewWrap.style.display = 'none';
+  imgPreview.src = '';
+}
+
+
+window.addEventListener('DOMContentLoaded', () => {
+  const existingUrl = imgUrlInput.value.trim();
+  if (existingUrl) {
+    imgPreview.src = existingUrl;
+    imgPreview.onload = () => { imgPreviewWrap.style.display = 'block'; };
+    imgPreview.onerror = () => { imgPreviewWrap.style.display = 'none'; };
+  }
+});
+  </script>

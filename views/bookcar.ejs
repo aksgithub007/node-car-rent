@@ -1,0 +1,692 @@
+<%- include('includes/Head') %>
+<%- include('includes/Navigation') %>
+
+<!-- ─── Book Car Page ─────────────────────────────────────────── -->
+<main class="auth-page">
+
+  <div class="auth-glow auth-glow--left"></div>
+  <div class="auth-glow auth-glow--right"></div>
+
+  <div class="auth-container booking-container">
+
+    <!-- ─── Left Panel: Car Details ──────────────────────────── -->
+    <div class="auth-panel auth-panel--brand">
+      <div class="brand-panel-inner">
+
+        <a href="/cars" class="auth-logo">
+          <div class="logo-mark">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M3 11l1.5-4.5A2 2 0 016.4 5h11.2a2 2 0 011.9 1.5L21 11M3 11v5a1 1 0 001 1h1a2 2 0 004 0h6a2 2 0 004 0h1a1 1 0 001-1v-5M3 11h18M7 17a1 1 0 110-2 1 1 0 010 2zm10 0a1 1 0 110-2 1 1 0 010 2z"/>
+            </svg>
+          </div>
+          <span class="logo-text">Drive<span>Elite</span></span>
+        </a>
+
+        <!-- Car Image -->
+        <div class="brand-car-preview">
+          <img src="<%= car.imageUrl %>" alt="<%= car.brand %> <%= car.name %>" class="brand-car-img"/>
+        </div>
+
+        <!-- Car Info -->
+        <div class="brand-car-details">
+          <span class="sidebar-badge"><%= car.category %></span>
+          <h2 class="brand-heading"><%= car.brand %> <span class="accent-text"><%= car.name %></span></h2>
+
+          <ul class="brand-features">
+            <li>
+              <span class="feat-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"/>
+                </svg>
+              </span>
+              <span><%= car.seatCapacity %> Seats</span>
+            </li>
+            <li>
+              <span class="feat-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12a7.5 7.5 0 0015 0m-15 0a7.5 7.5 0 1115 0m-15 0H3m16.5 0H21m-1.5 0H12m-8.457 3.077l1.41-.513m14.095-5.13l1.41-.513M5.106 17.785l1.15-.964m11.49-9.642l1.149-.964M7.501 19.795l.75-1.3m7.5-12.99l.75-1.3m-6.063 16.658l.26-1.477m2.605-14.772l.26-1.477m0 17.726l-.26-1.477M10.698 4.614l-.26-1.477M16.5 19.794l-.75-1.299M7.5 4.205L12 12m6.894 5.785l-1.149-.964M6.256 7.178l-1.15-.964m15.352 8.864l-1.41-.513M4.954 9.435l-1.41-.514M12.002 12l-3.75 6.495"/>
+                </svg>
+              </span>
+              <span><%= car.transmission %></span>
+            </li>
+            <li>
+              <span class="feat-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15.362 5.214A8.252 8.252 0 0112 21 8.25 8.25 0 016.038 7.048 8.287 8.287 0 009 9.6a8.983 8.983 0 013.361-6.867 8.21 8.21 0 003 2.48z"/>
+                </svg>
+              </span>
+              <span><%= car.fuelType %></span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Price -->
+        <div class="brand-price-row">
+          <span class="brand-price-label">Rental Price</span>
+          <span class="brand-price">₹<%= car.rentalPrice.toLocaleString('en-IN') %><small>/day</small></span>
+        </div>
+
+        <!-- Decorative car art -->
+        <div class="brand-car-art" aria-hidden="true">
+          <svg viewBox="0 0 320 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 62 L52 34 L90 28 L160 24 L220 28 L262 34 L290 50 L300 62 L300 72 L20 72 Z"
+              stroke="rgba(232,200,74,0.18)" stroke-width="1.5" fill="rgba(232,200,74,0.03)"/>
+            <circle cx="75"  cy="72" r="12" stroke="rgba(232,200,74,0.25)" stroke-width="1.5" fill="none"/>
+            <circle cx="245" cy="72" r="12" stroke="rgba(232,200,74,0.25)" stroke-width="1.5" fill="none"/>
+            <circle cx="75"  cy="72" r="4"  fill="rgba(232,200,74,0.2)"/>
+            <circle cx="245" cy="72" r="4"  fill="rgba(232,200,74,0.2)"/>
+          </svg>
+        </div>
+
+      </div>
+    </div><!-- /.auth-panel--brand -->
+
+    <!-- ─── Right Panel: Booking Form ────────────────────────── -->
+    <div class="auth-panel auth-panel--form">
+      <div class="form-panel-inner">
+
+        <div class="auth-form-header">
+          <div class="bk-header-top">
+            <span class="auth-tag">Reservation</span>
+            <a href="/" class="back-link">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"/>
+              </svg>
+              Back
+            </a>
+          </div>
+          <h1 class="auth-title">Book Your <span class="accent-text">Ride</span></h1>
+          <p class="auth-subtitle">Complete your booking for the <%= car.brand %> <%= car.name %></p>
+        </div>
+
+        <% if (locals.flashError) { %>
+          <div class="auth-alert auth-alert--error">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"/>
+            </svg>
+            <span><%= flashError %></span>
+          </div>
+        <% } %>
+
+        <% if (locals.flashSuccess) { %>
+          <div class="auth-alert auth-alert--success">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <span><%= flashSuccess %></span>
+          </div>
+        <% } %>
+
+        <form action="/booking" method="POST" class="auth-form" novalidate>
+          <input type="hidden" name="_csrf"      value="<%= csrfToken %>">
+          <input type="hidden" name="carId"      value="<%= car._id %>">
+          <input type="hidden" name="totalDays"  id="hiddenTotalDays"  value="">
+          <input type="hidden" name="totalPrice" id="hiddenTotalPrice" value="">
+
+          <!-- Section header -->
+          <div class="form-section-head">
+            <span class="section-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"/>
+              </svg>
+            </span>
+            <div>
+              <h3 class="section-title">Rental Period</h3>
+              <p class="section-sub">Choose your pick-up and drop-off dates</p>
+            </div>
+          </div>
+
+          <!-- Date Fields -->
+          <div class="field-grid field-grid--2">
+
+            <div class="field-group">
+              <label class="field-label" for="pickupDate">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5"/>
+                </svg>
+                Pick-up Date
+              </label>
+              <div class="field-wrap">
+                <input type="date" id="pickupDate" name="pickupDate" class="field-input" required/>
+              </div>
+            </div>
+
+            <div class="field-group">
+              <label class="field-label" for="dropoffDate">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5"/>
+                </svg>
+                Drop-off Date
+              </label>
+              <div class="field-wrap">
+                <input type="date" id="dropoffDate" name="dropoffDate" class="field-input" required/>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Live Price Summary -->
+          <div class="rental-summary" id="rentalSummary" style="display:none;">
+            <div class="summary-row">
+              <span class="summary-label">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5"/>
+                </svg>
+                Duration
+              </span>
+              <span class="summary-value" id="totalDaysDisplay">—</span>
+            </div>
+            <div class="summary-row">
+              <span class="summary-label">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75"/>
+                </svg>
+                Rate per Day
+              </span>
+              <span class="summary-value accent">₹<%= car.rentalPrice.toLocaleString('en-IN') %></span>
+            </div>
+            <div class="summary-divider"></div>
+            <div class="summary-row summary-row--total">
+              <span class="summary-label total-label">Total Amount</span>
+              <span class="summary-total" id="totalPriceDisplay">₹0</span>
+            </div>
+          </div>
+
+          <!-- Placeholder before dates picked -->
+          <div class="summary-placeholder" id="summaryPlaceholder">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5"/>
+            </svg>
+            Select both dates to see price breakdown
+          </div>
+
+          <!-- Actions -->
+          <div class="form-actions">
+            <button type="button" class="auth-btn auth-btn--reset" onclick="resetBookingForm()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"/>
+              </svg>
+              Reset
+            </button>
+            <a href="/" class="auth-btn auth-btn--ghost">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+              </svg>
+              Cancel
+            </a>
+            <button type="submit" class="auth-btn auth-btn--primary" id="submitBtn" disabled>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+              Confirm Booking
+            </button>
+          </div>
+
+        </form>
+
+        <!-- Trust Badges -->
+        <div class="trust-badges">
+          <div class="trust-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/>
+            </svg>
+            <span>Free cancellation up to 24h before</span>
+          </div>
+          <div class="trust-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <span>Instant confirmation · No hidden charges</span>
+          </div>
+        </div>
+
+      </div>
+    </div><!-- /.auth-panel--form -->
+
+  </div><!-- /.auth-container -->
+</main>
+
+<%- include('includes/Toast') %>
+<%- include('includes/Footer') %>
+
+<style>
+  /* ─── Reuse signin layout ────────────────────────────────── */
+  .auth-page {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 100px 24px 60px;
+    z-index: 1;
+    overflow: hidden;
+  }
+
+  .auth-glow {
+    position: fixed; border-radius: 50%;
+    pointer-events: none; z-index: 0; filter: blur(80px);
+  }
+  .auth-glow--left {
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(232,200,74,0.07) 0%, transparent 70%);
+    top: 10%; left: -100px;
+  }
+  .auth-glow--right {
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(100,80,200,0.06) 0%, transparent 70%);
+    bottom: 10%; right: -80px;
+  }
+
+  /* ─── Container ──────────────────────────────────────────── */
+  .auth-container {
+    position: relative; z-index: 10;
+    width: 100%; max-width: 960px;
+    display: grid; grid-template-columns: 1fr 1fr;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 24px; overflow: hidden;
+    box-shadow: 0 40px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.03);
+    animation: authIn 0.6s cubic-bezier(0.4,0,0.2,1) both;
+  }
+
+  /* Wider for booking since both panels have content */
+  .booking-container { max-width: 1020px; }
+
+  @keyframes authIn {
+    from { opacity: 0; transform: translateY(32px) scale(0.98); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  /* ─── Brand Panel (Left) ─────────────────────────────────── */
+  .auth-panel--brand {
+    position: relative;
+    background: linear-gradient(145deg, #0e0e18 0%, #111120 60%, #141428 100%);
+    border-right: 1px solid var(--card-border);
+    overflow: hidden;
+  }
+  .auth-panel--brand::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  }
+  .auth-panel--brand::after {
+    content: ''; position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 70% 50% at 30% 20%, rgba(232,200,74,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 40% at 80% 80%, rgba(100,80,200,0.06) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .brand-panel-inner {
+    position: relative; z-index: 1;
+    padding: 40px 36px;
+    height: 100%;
+    display: flex; flex-direction: column; gap: 24px;
+  }
+
+  /* ─── Logo ───────────────────────────────────────────────── */
+  .auth-logo {
+    display: flex; align-items: center; gap: 12px; text-decoration: none;
+  }
+  .logo-mark {
+    width: 36px; height: 36px;
+    background: var(--accent-dim);
+    border: 1px solid rgba(232,200,74,0.25);
+    border-radius: 10px;
+    display: grid; place-items: center; flex-shrink: 0;
+  }
+  .logo-mark svg { width: 18px; height: 18px; stroke: var(--accent); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .logo-text { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 0.06em; color: var(--text-primary); }
+  .logo-text span { color: var(--accent); }
+
+  /* ─── Car Preview ────────────────────────────────────────── */
+  .brand-car-preview {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 14px;
+    padding: 20px;
+    text-align: center;
+  }
+  .brand-car-img {
+    width: 100%; height: 140px;
+    object-fit: contain; display: block;
+    filter: drop-shadow(0 8px 24px rgba(0,0,0,0.5));
+  }
+
+  /* ─── Car Details ────────────────────────────────────────── */
+  .brand-car-details { display: flex; flex-direction: column; gap: 14px; }
+
+  .sidebar-badge {
+    display: inline-block;
+    font-size: 10px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--accent);
+    background: rgba(232,200,74,0.1);
+    border: 1px solid rgba(232,200,74,0.2);
+    border-radius: 20px; padding: 3px 10px;
+  }
+
+  .brand-heading {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px; letter-spacing: 0.04em;
+    color: var(--text-primary); line-height: 1.1;
+  }
+  .accent-text { color: var(--accent); }
+
+  .brand-features {
+    list-style: none;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .brand-features li {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 13px; color: var(--text-label);
+  }
+  .feat-icon {
+    width: 28px; height: 28px;
+    border-radius: 7px;
+    background: var(--accent-dim);
+    border: 1px solid rgba(232,200,74,0.2);
+    display: grid; place-items: center; flex-shrink: 0;
+  }
+  .feat-icon svg { width: 14px; height: 14px; stroke: var(--accent); }
+
+  /* ─── Price Row ──────────────────────────────────────────── */
+  .brand-price-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 0 0;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    margin-top: auto;
+  }
+  .brand-price-label { font-size: 12px; color: var(--text-muted); }
+  .brand-price {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.4rem; font-weight: 800;
+    color: var(--accent); letter-spacing: -0.04em;
+  }
+  .brand-price small { font-size: 11px; font-weight: 400; color: var(--text-muted); margin-left: 2px; }
+
+  .brand-car-art { opacity: 0.7; }
+  .brand-car-art svg { width: 100%; }
+
+  /* ─── Form Panel (Right) ─────────────────────────────────── */
+  .auth-panel--form { background: var(--card-bg); }
+
+  .form-panel-inner {
+    padding: 40px 36px;
+    display: flex; flex-direction: column; gap: 20px;
+  }
+
+  /* ─── Header ─────────────────────────────────────────────── */
+  .bk-header-top {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 6px;
+  }
+  .auth-tag {
+    display: inline-block;
+    padding: 4px 12px; border-radius: 100px;
+    background: var(--accent-dim);
+    border: 1px solid rgba(232,200,74,0.25);
+    font-size: 10px; font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--accent);
+  }
+  .back-link {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 12px; color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .back-link:hover { color: var(--text-primary); }
+  .back-link svg { width: 14px; height: 14px; }
+
+  .auth-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px; letter-spacing: 0.04em;
+    color: var(--text-primary); line-height: 1;
+    margin-top: 4px;
+  }
+  .auth-subtitle {
+    font-size: 13px; color: var(--text-muted); margin-top: 4px;
+  }
+
+  /* ─── Alerts ─────────────────────────────────────────────── */
+  .auth-alert {
+    display: flex; align-items: center; gap: 10px;
+    padding: 12px 16px; border-radius: 10px; font-size: 13px;
+  }
+  .auth-alert svg { width: 16px; height: 16px; flex-shrink: 0; }
+  .auth-alert--error {
+    background: rgba(255,75,75,0.1); border: 1px solid rgba(255,75,75,0.3); color: #ff7a7a;
+  }
+  .auth-alert--success {
+    background: rgba(80,200,120,0.08); border: 1px solid rgba(80,200,120,0.25); color: #7defa8;
+  }
+
+  /* ─── Form ───────────────────────────────────────────────── */
+  .auth-form { display: flex; flex-direction: column; gap: 16px; }
+
+  .form-section-head {
+    display: flex; align-items: center; gap: 12px;
+  }
+  .section-icon {
+    width: 34px; height: 34px; flex-shrink: 0;
+    background: var(--accent-dim);
+    border: 1px solid rgba(232,200,74,0.2);
+    border-radius: 9px;
+    display: grid; place-items: center;
+  }
+  .section-icon svg { width: 16px; height: 16px; stroke: var(--accent); }
+  .section-title { font-size: 14px; font-weight: 700; color: var(--text-primary); }
+  .section-sub   { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+
+  /* Date grid */
+  .field-grid { display: grid; gap: 12px; }
+  .field-grid--2 { grid-template-columns: 1fr 1fr; }
+
+  .field-group { display: flex; flex-direction: column; gap: 7px; }
+
+  .field-label {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--text-label);
+  }
+  .field-label svg { width: 13px; height: 13px; flex-shrink: 0; }
+
+  .field-wrap { position: relative; }
+
+  .field-input {
+    width: 100%; padding: 12px 14px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    color: var(--text-primary);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px; outline: none;
+    transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+    box-sizing: border-box;
+  }
+  .field-input:focus {
+    border-color: rgba(232,200,74,0.5);
+    background: rgba(232,200,74,0.03);
+    box-shadow: 0 0 0 3px rgba(232,200,74,0.08);
+  }
+  .field-input::-webkit-calendar-picker-indicator { filter: invert(0.5); cursor: pointer; }
+
+  /* ─── Rental Summary ────────────────────────────────────── */
+  .rental-summary {
+    background: rgba(232,200,74,0.04);
+    border: 1px solid rgba(232,200,74,0.18);
+    border-radius: 12px; padding: 16px 18px;
+    animation: authIn 0.25s ease both;
+  }
+  .summary-row {
+    display: flex; align-items: center;
+    justify-content: space-between; padding: 5px 0;
+  }
+  .summary-label {
+    display: flex; align-items: center; gap: 7px;
+    font-size: 12px; color: var(--text-muted);
+  }
+  .summary-label svg { width: 13px; height: 13px; }
+  .total-label { font-size: 13px; font-weight: 700; color: var(--text-primary); }
+  .summary-value { font-size: 13px; font-weight: 600; color: var(--text-primary); }
+  .summary-value.accent { color: var(--accent); }
+  .summary-divider { height: 1px; background: rgba(255,255,255,0.06); margin: 8px 0; }
+  .summary-total {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.4rem; font-weight: 800;
+    color: var(--accent); letter-spacing: -0.04em;
+  }
+
+  .summary-placeholder {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 12px; color: var(--text-muted);
+    background: rgba(255,255,255,0.02);
+    border: 1px dashed rgba(255,255,255,0.08);
+    border-radius: 10px; padding: 12px 16px;
+  }
+  .summary-placeholder svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+  /* ─── Actions ────────────────────────────────────────────── */
+  .form-actions {
+    display: grid; grid-template-columns: auto auto 1fr; gap: 10px; align-items: center;
+  }
+
+  .auth-btn {
+    display: flex; align-items: center; justify-content: center; gap: 7px;
+    padding: 12px 18px; border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px; font-weight: 700;
+    letter-spacing: 0.03em; cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s; border: none;
+  }
+  .auth-btn svg { width: 15px; height: 15px; flex-shrink: 0; }
+
+  .auth-btn--primary {
+    background: var(--accent); color: var(--bg);
+    text-transform: uppercase;
+    position: relative; overflow: hidden;
+  }
+  .auth-btn--primary::before {
+    content: ''; position: absolute; inset: 0;
+    background: rgba(255,255,255,0); transition: background 0.2s;
+  }
+  .auth-btn--primary:hover::before { background: rgba(255,255,255,0.12); }
+  .auth-btn--primary:active { transform: scale(0.98); }
+  .auth-btn--primary:disabled { opacity: 0.4; cursor: not-allowed; transform: none !important; }
+
+  .auth-btn--ghost {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--card-border);
+    color: var(--text-label); font-size: 12px;
+  }
+  .auth-btn--ghost:hover {
+    background: rgba(255,255,255,0.06);
+    border-color: rgba(255,255,255,0.12);
+    color: var(--text-primary);
+  }
+  .auth-btn--ghost svg { stroke: currentColor; }
+
+  .auth-btn--reset {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--card-border);
+    color: var(--text-muted); font-size: 12px;
+  }
+  .auth-btn--reset:hover {
+    background: rgba(255,75,75,0.08);
+    border-color: rgba(255,75,75,0.3);
+    color: #ff7a7a;
+  }
+  .auth-btn--reset svg { stroke: currentColor; }
+
+  /* ─── Trust Badges ───────────────────────────────────────── */
+  .trust-badges {
+    display: flex; flex-direction: column; gap: 8px;
+    padding-top: 14px; border-top: 1px solid var(--card-border);
+  }
+  .trust-item {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 11px; color: var(--text-muted);
+  }
+  .trust-item svg { width: 13px; height: 13px; flex-shrink: 0; stroke: var(--accent); opacity: 0.8; }
+
+  /* ─── Responsive ─────────────────────────────────────────── */
+  @media (max-width: 768px) {
+    .auth-container { grid-template-columns: 1fr; max-width: 500px; }
+    .auth-panel--brand { display: none; }
+    .form-panel-inner { padding: 36px 24px; }
+  }
+  @media (max-width: 480px) {
+    .auth-page { padding: 90px 16px 40px; }
+    .form-panel-inner { padding: 28px 18px; }
+    .field-grid--2 { grid-template-columns: 1fr; }
+    .form-actions { grid-template-columns: 1fr 1fr; }
+    .auth-btn--primary { grid-column: span 2; }
+  }
+</style>
+
+<script>
+  const pickupEl    = document.getElementById('pickupDate');
+  const dropoffEl   = document.getElementById('dropoffDate');
+  const summaryBox  = document.getElementById('rentalSummary');
+  const placeholder = document.getElementById('summaryPlaceholder');
+  const submitBtn   = document.getElementById('submitBtn');
+  const totalDaysDisplay  = document.getElementById('totalDaysDisplay');
+  const totalPriceDisplay = document.getElementById('totalPriceDisplay');
+  const hiddenDays  = document.getElementById('hiddenTotalDays');
+  const hiddenPrice = document.getElementById('hiddenTotalPrice');
+
+  const pricePerDay = <%= car.rentalPrice %>;
+  const today = new Date().toISOString().split('T')[0];
+  pickupEl.min  = today;
+  dropoffEl.min = today;
+
+  function updateSummary() {
+    const p = pickupEl.value;
+    const d = dropoffEl.value;
+
+    if (!p || !d) {
+      summaryBox.style.display  = 'none';
+      placeholder.style.display = 'flex';
+      submitBtn.disabled = true;
+      hiddenDays.value = hiddenPrice.value = '';
+      return;
+    }
+
+    const days = Math.round((new Date(d) - new Date(p)) / 86400000);
+    if (days <= 0) {
+      summaryBox.style.display  = 'none';
+      placeholder.style.display = 'flex';
+      submitBtn.disabled = true;
+      hiddenDays.value = hiddenPrice.value = '';
+      return;
+    }
+
+    const total = days * pricePerDay;
+    totalDaysDisplay.textContent  = days + (days === 1 ? ' day' : ' days');
+    totalPriceDisplay.textContent = '₹' + total.toLocaleString('en-IN');
+    hiddenDays.value  = days;
+    hiddenPrice.value = total;
+
+    summaryBox.style.display  = 'block';
+    placeholder.style.display = 'none';
+    submitBtn.disabled = false;
+  }
+
+  pickupEl.addEventListener('change', () => {
+    dropoffEl.min = pickupEl.value;
+    if (dropoffEl.value && dropoffEl.value <= pickupEl.value) dropoffEl.value = '';
+    updateSummary();
+  });
+  dropoffEl.addEventListener('change', updateSummary);
+
+  function resetBookingForm() {
+    document.querySelector('.auth-form').reset();
+    summaryBox.style.display  = 'none';
+    placeholder.style.display = 'flex';
+    submitBtn.disabled = true;
+    hiddenDays.value = hiddenPrice.value = '';
+  }
+</script>

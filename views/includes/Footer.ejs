@@ -1,0 +1,76 @@
+ <!-- ─── Footer ───────────────────────────────────────────── -->
+  <footer class="site-footer">
+    <p class="footer-copy">© 2025 <strong>DriveElite</strong> — All rights reserved.</p>
+    <p class="footer-copy">Premium rentals · No hidden fees · Cancel anytime</p>
+  </footer>
+
+  <!-- ─── Scripts ───────────────────────────────────────────── -->
+  <script>
+    // ── Filter buttons toggle ──────────────────────────────────
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', function () {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+      });
+    });
+
+    // ── Favourite toggle ───────────────────────────────────────
+    document.querySelectorAll('.fav-btn').forEach(btn => {
+      btn.addEventListener('click', function (e) {
+        e.preventDefault();
+        this.classList.toggle('active');
+      });
+    });
+
+    // ── Navbar scroll effect ───────────────────────────────────
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 20);
+    }, { passive: true });
+
+    // ── Scroll progress bar ────────────────────────────────────
+    const progressBar = document.getElementById('navProgress');
+    window.addEventListener('scroll', () => {
+      const scrollTop = document.documentElement.scrollTop;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+      progressBar.style.width = pct + '%';
+    }, { passive: true });
+
+    // ── Hamburger / mobile menu ────────────────────────────────
+    const hamburger  = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    hamburger.addEventListener('click', () => {
+      const isOpen = hamburger.classList.toggle('open');
+      mobileMenu.classList.toggle('open', isOpen);
+      document.body.style.overflow = isOpen ? 'hidden' : '';
+    });
+
+    // Close on backdrop click
+    mobileMenu.addEventListener('click', e => {
+      if (e.target === mobileMenu) {
+        hamburger.classList.remove('open');
+        mobileMenu.classList.remove('open');
+        document.body.style.overflow = '';
+      }
+    });
+
+    // Close on link click
+    mobileMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        hamburger.classList.remove('open');
+        mobileMenu.classList.remove('open');
+        document.body.style.overflow = '';
+      });
+    });
+
+    // ── Book handler ───────────────────────────────────────────
+    function bookCar(id, name) {
+      alert(`Booking initiated for: ${name} (ID: ${id})\nRedirecting to checkout…`);
+      // window.location.href = `/book/${id}`;
+    }
+  </script>
+
+</body>
+</html>

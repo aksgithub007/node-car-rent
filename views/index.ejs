@@ -1,0 +1,309 @@
+  <%- include("includes/Head") %> 
+  <%- include("includes/Navigation") %>
+
+  <!-- ─── Hero ─────────────────────────────────────────────── -->
+  <section class="hero">
+    <p class="hero-eyebrow">// Premium Fleet Available Now</p>
+    <h1 class="hero-title">Drive the<br /><em>Finest.</em><br />Rent with Ease.</h1>
+    <p class="hero-subtitle">
+      Handpicked luxury and performance vehicles, ready to rent by the day.
+      No hidden fees. Just the open road.
+    </p>
+    <div class="hero-stats">
+      <div class="stat">
+        <span class="stat-value">48+</span>
+        <span class="stat-label">Vehicles</span>
+      </div>
+      <div class="stat">
+        <span class="stat-value">24/7</span>
+        <span class="stat-label">Support</span>
+      </div>
+      <div class="stat">
+        <span class="stat-value">12</span>
+        <span class="stat-label">Cities</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Filter Bar ────────────────────────────────────────── -->
+  <div class="filter-bar">
+    <span class="filter-label">Filter</span>
+    <button class="filter-btn active">All</button>
+    <button class="filter-btn">SUV</button>
+    <button class="filter-btn">Sedan</button>
+    <button class="filter-btn">Sports</button>
+    <button class="filter-btn">Electric</button>
+    <button class="filter-btn">Luxury</button>
+  </div>
+
+  <!-- ─── Section Header ────────────────────────────────────── -->
+  <div class="section-header">
+    <h2 class="section-title">Available Cars</h2>
+    <div class="section-line"></div>
+    <span class="car-count">6 results</span>
+  </div>
+
+  <!-- ─── Cars Grid ─────────────────────────────────────────── -->
+  <main class="cars-grid">
+
+    <!-- Card 1 — BMW M4 -->
+    <article class="car-card featured">
+      <!-- <span class="card-badge badge-popular">Popular</span> -->
+      <!-- <button class="fav-btn" aria-label="Add to favourites">
+        <svg viewBox="0 0 24 24" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+      </button> -->
+      <div class="card-image-wrap">
+        <img class="card-image" src="https://images.unsplash.com/photo-1555215695-3004980ad54e?w=600&q=80" alt="BMW M4" loading="lazy" />
+      </div>
+      <div class="card-body">
+        <p class="car-category">Sports</p>
+        <h3 class="car-name">BMW M4</h3>
+        <p class="car-model">Competition · 2024</p>
+        <div class="car-specs">
+          <div class="spec-item">
+            <div class="spec-icon"><svg viewBox="0 0 24 24" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"/></svg></div>
+            <span class="spec-value">4</span>
+            <span class="spec-label">Seats</span>
+          </div>
+          <div class="spec-item">
+            <div class="spec-icon"><svg viewBox="0 0 24 24" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75"/></svg></div>
+            <span class="spec-value">Auto</span>
+            <span class="spec-label">Trans.</span>
+          </div>
+          <div class="spec-item">
+            <div class="spec-icon"><svg viewBox="0 0 24 24" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 9.776c.112-.017.227-.026.344-.026h15.812c.117 0 .232.009.344.026m-16.5 0a2.25 2.25 0 00-1.883 2.542l.857 6a2.25 2.25 0 002.227 1.932H19.05a2.25 2.25 0 002.227-1.932l.857-6a2.25 2.25 0 00-1.883-2.542m-16.5 0V6A2.25 2.25 0 016 3.75h3.879a1.5 1.5 0 011.06.44l2.122 2.12a1.5 1.5 0 001.06.44H18A2.25 2.25 0 0120.25 9v.776"/></svg></div>
+            <span class="spec-value">Petrol</span>
+            <span class="spec-label">Fuel</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="price-block">
+            <span class="price-label">Per Day</span>
+            <div class="price-value">$149<span>/day</span></div>
+          </div>
+          <button class="book-btn" onclick="bookCar('bmw-m4', 'BMW M4')">
+            Book Now
+            <svg viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+          </button>
+        </div>
+      </div>
+    </article>
+
+    <!-- Card 2 — Tesla Model 3 -->
+    <article class="car-card">
+      <!-- <span class="card-badge badge-new">New</span> -->
+      <!-- <button class="fav-btn" aria-label="Add to favourites">
+        <svg viewBox="0 0 24 24" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+      </button> -->
+      <div class="card-image-wrap">
+        <img class="card-image" src="https://images.unsplash.com/photo-1617788138017-80ad40651399?w=600&q=80" alt="Tesla Model 3" loading="lazy" />
+      </div>
+      <div class="card-body">
+        <p class="car-category">Electric</p>
+        <h3 class="car-name">Tesla Model 3</h3>
+        <p class="car-model">Long Range · 2024</p>
+        <div class="car-specs">
+          <div class="spec-item">
+            <div class="spec-icon"><svg viewBox="0 0 24 24" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"/></svg></div>
+            <span class="spec-value">5</span>
+            <span class="spec-label">Seats</span>
+          </div>
+          <div class="spec-item">
+            <div class="spec-icon"><svg viewBox="0 0 24 24" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75"/></svg></div>
+            <span class="spec-value">Auto</span>
+            <span class="spec-label">Trans.</span>
+          </div>
+          <div class="spec-item">
+            <div class="spec-icon"><svg viewBox="0 0 24 24" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"/></svg></div>
+            <span class="spec-value">Electric</span>
+            <span class="spec-label">Fuel</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="price-block">
+            <span class="price-label">Per Day</span>
+            <div class="price-value">$129<span>/day</span></div>
+          </div>
+          <button class="book-btn" onclick="bookCar('tesla-model3', 'Tesla Model 3')">
+            Book Now
+            <svg viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+          </button>
+        </div>
+      </div>
+    </article>
+
+    <!-- Card 3 — Porsche 911 -->
+    <article class="car-card">
+      <!-- <span class="card-badge badge-hot">Hot</span> -->
+      <!-- <button class="fav-btn" aria-label="Add to favourites">
+        <svg viewBox="0 0 24 24" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+      </button> -->
+      <div class="card-image-wrap">
+        <img class="card-image" src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=600&q=80" alt="Porsche 911" loading="lazy" />
+      </div>
+      <div class="card-body">
+        <p class="car-category">Luxury</p>
+        <h3 class="car-name">Porsche 911</h3>
+        <p class="car-model">Carrera S · 2023</p>
+        <div class="car-specs">
+          <div class="spec-item">
+            <div class="spec-icon"><svg viewBox="0 0 24 24" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"/></svg></div>
+            <span class="spec-value">4</span>
+            <span class="spec-label">Seats</span>
+          </div>
+          <div class="spec-item">
+            <div class="spec-icon"><svg viewBox="0 0 24 24" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75"/></svg></div>
+            <span class="spec-value">Auto</span>
+            <span class="spec-label">Trans.</span>
+          </div>
+          <div class="spec-item">
+            <div class="spec-icon"><svg viewBox="0 0 24 24" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 9.776c.112-.017.227-.026.344-.026h15.812c.117 0 .232.009.344.026m-16.5 0a2.25 2.25 0 00-1.883 2.542l.857 6a2.25 2.25 0 002.227 1.932H19.05a2.25 2.25 0 002.227-1.932l.857-6a2.25 2.25 0 00-1.883-2.542m-16.5 0V6A2.25 2.25 0 016 3.75h3.879a1.5 1.5 0 011.06.44l2.122 2.12a1.5 1.5 0 001.06.44H18A2.25 2.25 0 0120.25 9v.776"/></svg></div>
+            <span class="spec-value">Petrol</span>
+            <span class="spec-label">Fuel</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="price-block">
+            <span class="price-label">Per Day</span>
+            <div class="price-value">$249<span>/day</span></div>
+          </div>
+          <button class="book-btn" onclick="bookCar('porsche-911', 'Porsche 911')">
+            Book Now
+            <svg viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+          </button>
+        </div>
+      </div>
+    </article>
+
+    <!-- Card 4 — Range Rover -->
+    <article class="car-card">
+      <!-- <button class="fav-btn" aria-label="Add to favourites">
+        <svg viewBox="0 0 24 24" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+      </button> -->
+      <div class="card-image-wrap">
+        <img class="card-image" src="https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=600&q=80" alt="Range Rover" loading="lazy" />
+      </div>
+      <div class="card-body">
+        <p class="car-category">SUV</p>
+        <h3 class="car-name">Range Rover</h3>
+        <p class="car-model">Autobiography · 2024</p>
+        <div class="car-specs">
+          <div class="spec-item">
+            <div class="spec-icon"><svg viewBox="0 0 24 24" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"/></svg></div>
+            <span class="spec-value">7</span>
+            <span class="spec-label">Seats</span>
+          </div>
+          <div class="spec-item">
+            <div class="spec-icon"><svg viewBox="0 0 24 24" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75"/></svg></div>
+            <span class="spec-value">Auto</span>
+            <span class="spec-label">Trans.</span>
+          </div>
+          <div class="spec-item">
+            <div class="spec-icon"><svg viewBox="0 0 24 24" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 9.776c.112-.017.227-.026.344-.026h15.812c.117 0 .232.009.344.026m-16.5 0a2.25 2.25 0 00-1.883 2.542l.857 6a2.25 2.25 0 002.227 1.932H19.05a2.25 2.25 0 002.227-1.932l.857-6a2.25 2.25 0 00-1.883-2.542m-16.5 0V6A2.25 2.25 0 016 3.75h3.879a1.5 1.5 0 011.06.44l2.122 2.12a1.5 1.5 0 001.06.44H18A2.25 2.25 0 0120.25 9v.776"/></svg></div>
+            <span class="spec-value">Hybrid</span>
+            <span class="spec-label">Fuel</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="price-block">
+            <span class="price-label">Per Day</span>
+            <div class="price-value">$199<span>/day</span></div>
+          </div>
+          <button class="book-btn" onclick="bookCar('range-rover', 'Range Rover')">
+            Book Now
+            <svg viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+          </button>
+        </div>
+      </div>
+    </article>
+
+    <!-- Card 5 — Mercedes E-Class -->
+    <article class="car-card">
+      <!-- <button class="fav-btn" aria-label="Add to favourites">
+        <svg viewBox="0 0 24 24" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+      </button> -->
+      <div class="card-image-wrap">
+        <img class="card-image" src="https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=600&q=80" alt="Mercedes E-Class" loading="lazy" />
+      </div>
+      <div class="card-body">
+        <p class="car-category">Sedan</p>
+        <h3 class="car-name">Mercedes E-Class</h3>
+        <p class="car-model">AMG Line · 2024</p>
+        <div class="car-specs">
+          <div class="spec-item">
+            <div class="spec-icon"><svg viewBox="0 0 24 24" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"/></svg></div>
+            <span class="spec-value">5</span>
+            <span class="spec-label">Seats</span>
+          </div>
+          <div class="spec-item">
+            <div class="spec-icon"><svg viewBox="0 0 24 24" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75"/></svg></div>
+            <span class="spec-value">Auto</span>
+            <span class="spec-label">Trans.</span>
+          </div>
+          <div class="spec-item">
+            <div class="spec-icon"><svg viewBox="0 0 24 24" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 9.776c.112-.017.227-.026.344-.026h15.812c.117 0 .232.009.344.026m-16.5 0a2.25 2.25 0 00-1.883 2.542l.857 6a2.25 2.25 0 002.227 1.932H19.05a2.25 2.25 0 002.227-1.932l.857-6a2.25 2.25 0 00-1.883-2.542m-16.5 0V6A2.25 2.25 0 016 3.75h3.879a1.5 1.5 0 011.06.44l2.122 2.12a1.5 1.5 0 001.06.44H18A2.25 2.25 0 0120.25 9v.776"/></svg></div>
+            <span class="spec-value">Diesel</span>
+            <span class="spec-label">Fuel</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="price-block">
+            <span class="price-label">Per Day</span>
+            <div class="price-value">$119<span>/day</span></div>
+          </div>
+          <button class="book-btn" onclick="bookCar('merc-eclass', 'Mercedes E-Class')">
+            Book Now
+            <svg viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+          </button>
+        </div>
+      </div>
+    </article>
+
+    <!-- Card 6 — Audi RS6 -->
+    <article class="car-card">
+      <!-- <span class="card-badge badge-hot">Hot</span> -->
+      <!-- <button class="fav-btn" aria-label="Add to favourites">
+        <svg viewBox="0 0 24 24" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+      </button> -->
+      <div class="card-image-wrap">
+        <img class="card-image" src="https://images.unsplash.com/photo-1542362567-b07e54358753?w=600&q=80" alt="Audi RS6" loading="lazy" />
+      </div>
+      <div class="card-body">
+        <p class="car-category">Sports</p>
+        <h3 class="car-name">Audi RS6</h3>
+        <p class="car-model">Avant · 2024</p>
+        <div class="car-specs">
+          <div class="spec-item">
+            <div class="spec-icon"><svg viewBox="0 0 24 24" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"/></svg></div>
+            <span class="spec-value">5</span>
+            <span class="spec-label">Seats</span>
+          </div>
+          <div class="spec-item">
+            <div class="spec-icon"><svg viewBox="0 0 24 24" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75"/></svg></div>
+            <span class="spec-value">Auto</span>
+            <span class="spec-label">Trans.</span>
+          </div>
+          <div class="spec-item">
+            <div class="spec-icon"><svg viewBox="0 0 24 24" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 9.776c.112-.017.227-.026.344-.026h15.812c.117 0 .232.009.344.026m-16.5 0a2.25 2.25 0 00-1.883 2.542l.857 6a2.25 2.25 0 002.227 1.932H19.05a2.25 2.25 0 002.227-1.932l.857-6a2.25 2.25 0 00-1.883-2.542m-16.5 0V6A2.25 2.25 0 016 3.75h3.879a1.5 1.5 0 011.06.44l2.122 2.12a1.5 1.5 0 001.06.44H18A2.25 2.25 0 0120.25 9v.776"/></svg></div>
+            <span class="spec-value">Petrol</span>
+            <span class="spec-label">Fuel</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="price-block">
+            <span class="price-label">Per Day</span>
+            <div class="price-value">$189<span>/day</span></div>
+          </div>
+          <button class="book-btn" onclick="bookCar('audi-rs6', 'Audi RS6')">
+            Book Now
+            <svg viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+          </button>
+        </div>
+      </div>
+    </article>
+
+  </main><!-- /.cars-grid -->
+
+<%- include('includes/Toast') %>
+  <%- include("includes/Footer") %>
+ 

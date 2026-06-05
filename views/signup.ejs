@@ -1,0 +1,620 @@
+<%- include('includes/Head') %>
+
+  <%- include('includes/Navigation') %>
+
+  <main class="auth-page">
+
+    <div class="auth-glow auth-glow--left"></div>
+    <div class="auth-glow auth-glow--right"></div>
+
+    <div class="auth-container auth-container--wide">
+
+      <!-- Left Panel: Branding -->
+      <div class="auth-panel auth-panel--brand">
+        <div class="brand-panel-inner">
+
+          <a href="/" class="auth-logo">
+            <div class="logo-mark">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3 11l1.5-4.5A2 2 0 016.4 5h11.2a2 2 0 011.9 1.5L21 11M3 11v5a1 1 0 001 1h1a2 2 0 004 0h6a2 2 0 004 0h1a1 1 0 001-1v-5M3 11h18M7 17a1 1 0 110-2 1 1 0 010 2zm10 0a1 1 0 110-2 1 1 0 010 2z"/>
+              </svg>
+            </div>
+            <span class="logo-text">Drive<span>Elite</span></span>
+          </a>
+
+          <div class="brand-copy">
+            <h2 class="brand-heading">Join the elite<br/>fleet.</h2>
+            <p class="brand-sub">Create your DriveElite account and unlock access to premium vehicles, exclusive deals, and seamless rentals.</p>
+          </div>
+
+          <ul class="brand-features">
+            <li>
+              <span class="feat-icon">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+              </span>
+              <span>Free to join, no subscription fees</span>
+            </li>
+            <li>
+              <span class="feat-icon">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+              </span>
+              <span>Manage bookings from one dashboard</span>
+            </li>
+            <li>
+              <span class="feat-icon">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+              </span>
+              <span>150+ premium cars available</span>
+            </li>
+          </ul>
+
+          <div class="brand-car-art" aria-hidden="true">
+            <svg viewBox="0 0 320 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M20 62 L52 34 L90 28 L160 24 L220 28 L262 34 L290 50 L300 62 L300 72 L20 72 Z"
+                stroke="rgba(232,200,74,0.18)" stroke-width="1.5" fill="rgba(232,200,74,0.03)"/>
+              <circle cx="75" cy="72" r="12" stroke="rgba(232,200,74,0.25)" stroke-width="1.5" fill="none"/>
+              <circle cx="245" cy="72" r="12" stroke="rgba(232,200,74,0.25)" stroke-width="1.5" fill="none"/>
+              <circle cx="75" cy="72" r="4" fill="rgba(232,200,74,0.2)"/>
+              <circle cx="245" cy="72" r="4" fill="rgba(232,200,74,0.2)"/>
+            </svg>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Right Panel: Form -->
+      <div class="auth-panel auth-panel--form">
+        <div class="form-panel-inner">
+
+          <div class="auth-form-header">
+            <span class="auth-tag">New Account</span>
+            <h1 class="auth-title">Sign Up</h1>
+            <p class="auth-subtitle">Fill in your details to get started</p>
+          </div>
+
+          <% if (locals.error) { %>
+            <div class="auth-alert auth-alert--error">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"/>
+              </svg>
+              <span><%= error %></span>
+            </div>
+          <% } %>
+
+          <form action="/admin/signup" method="POST" class="auth-form" novalidate>
+  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <!-- Row: Name + Role -->
+            <div class="field-row">
+              <div class="field-group">
+                <label class="field-label" for="name">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/>
+                  </svg>
+                  Full Name
+                </label>
+                <div class="field-wrap">
+                  <input type="text" id="name" name="name" class="field-input" placeholder="John Doe" autocomplete="name" required/>
+                </div>
+              </div>
+
+              <div class="field-group">
+                <label class="field-label" for="role">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 010 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 010-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                  </svg>
+                  Role
+                </label>
+                <div class="field-wrap">
+                  <select id="role" name="role" class="field-select" required>
+                    <option value="" disabled selected>Select a role</option>
+                    <option value="user">User</option>
+                    <option value="admin">Admin</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- Email -->
+            <div class="field-group">
+              <label class="field-label" for="email">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/>
+                </svg>
+                Email Address
+              </label>
+              <div class="field-wrap">
+                <input type="email" id="email" name="email" class="field-input" placeholder="you@example.com" autocomplete="email" required/>
+              </div>
+            </div>
+
+            <!-- Row: Password + Confirm Password -->
+            <div class="field-row">
+              <div class="field-group">
+                <label class="field-label" for="password">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/>
+                  </svg>
+                  Password
+                </label>
+                <div class="field-wrap field-wrap--password">
+                  <input type="password" id="password" name="password" class="field-input" placeholder="Min. 8 characters" autocomplete="new-password" required/>
+                  <button type="button" class="pwd-toggle" aria-label="Toggle password" onclick="togglePassword('password', this)">
+                    <svg class="eye-show" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"/>
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    </svg>
+                    <svg class="eye-hide" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="display:none">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88"/>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+
+              <div class="field-group">
+                <label class="field-label" for="confirmPassword">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/>
+                  </svg>
+                  Confirm Password
+                </label>
+                <div class="field-wrap field-wrap--password">
+                  <input type="password" id="confirmPassword" name="confirmPassword" class="field-input" placeholder="Re-enter password" autocomplete="new-password" required/>
+                  <button type="button" class="pwd-toggle" aria-label="Toggle confirm password" onclick="togglePassword('confirmPassword', this)">
+                    <svg class="eye-show" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"/>
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    </svg>
+                    <svg class="eye-hide" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="display:none">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88"/>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Password Strength Meter -->
+            <div class="pwd-strength" id="pwdStrength" style="display:none">
+              <div class="strength-bar">
+                <div class="strength-fill" id="strengthFill"></div>
+              </div>
+              <span class="strength-label" id="strengthLabel"></span>
+            </div>
+
+            <!-- Submit + Reset -->
+            <div class="btn-row">
+              <button type="submit" class="auth-btn auth-btn--primary">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M19 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zM4 19.235v-.11a6.375 6.375 0 0112.75 0v.109A12.318 12.318 0 0110.374 21c-2.331 0-4.512-.645-6.374-1.766z"/>
+                </svg>
+                Create Account
+              </button>
+              <button type="reset" class="auth-btn auth-btn--reset" onclick="resetForm()">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"/>
+                </svg>
+                Reset
+              </button>
+            </div>
+
+          </form>
+
+          <div class="auth-divider"><span>Already have an account?</span></div>
+
+          <a href="/admin/signin" class="auth-btn auth-btn--ghost">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75"/>
+            </svg>
+            Sign In Instead
+          </a>
+
+        </div>
+      </div>
+
+    </div>
+  </main>
+<%- include('includes/Toast') %>
+  <%- include('includes/Footer') %>
+
+  <style>
+    /* ── Page wrapper ──────────────────────────────────────────── */
+    .auth-page {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 100px 24px 60px;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .auth-glow {
+      position: fixed;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 0;
+      filter: blur(80px);
+    }
+
+    .auth-glow--left {
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(232,200,74,0.07) 0%, transparent 70%);
+      top: 10%; left: -100px;
+    }
+
+    .auth-glow--right {
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(100,80,200,0.06) 0%, transparent 70%);
+      bottom: 10%; right: -80px;
+    }
+
+    /* ── Container ─────────────────────────────────────────────── */
+    .auth-container {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      max-width: 960px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 40px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.03);
+      animation: authIn 0.6s cubic-bezier(0.4,0,0.2,1) both;
+    }
+
+    .auth-container--wide { max-width: 1040px; }
+
+    @keyframes authIn {
+      from { opacity: 0; transform: translateY(32px) scale(0.98); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* ── Brand Panel ───────────────────────────────────────────── */
+    .auth-panel--brand {
+      position: relative;
+      background: linear-gradient(145deg, #0e0e18 0%, #111120 60%, #141428 100%);
+      border-right: 1px solid var(--card-border);
+      overflow: hidden;
+    }
+
+    .auth-panel--brand::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    }
+
+    .auth-panel--brand::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 70% 50% at 30% 20%, rgba(232,200,74,0.08) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 40% at 80% 80%, rgba(100,80,200,0.06) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .brand-panel-inner {
+      position: relative;
+      z-index: 1;
+      padding: 48px 40px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    .auth-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+
+    .brand-heading {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 42px;
+      letter-spacing: 0.04em;
+      color: var(--text-primary);
+      line-height: 1.1;
+    }
+
+    .brand-sub { margin-top: 12px; font-size: 14px; color: var(--text-muted); line-height: 1.7; }
+
+    .brand-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-top: auto;
+    }
+
+    .brand-features li { display: flex; align-items: center; gap: 12px; font-size: 13px; color: var(--text-label); }
+
+    .feat-icon {
+      width: 28px; height: 28px;
+      border-radius: 7px;
+      background: var(--accent-dim);
+      border: 1px solid rgba(232,200,74,0.2);
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+    }
+
+    .feat-icon svg { width: 14px !important; height: 14px !important; stroke: var(--accent); }
+
+    .brand-car-art { margin-top: 8px; opacity: 0.8; }
+    .brand-car-art svg { width: 100%; }
+
+    /* ── Form Panel ────────────────────────────────────────────── */
+    .auth-panel--form { background: var(--card-bg); }
+
+    .form-panel-inner {
+      padding: 48px 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .auth-tag {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 100px;
+      background: var(--accent-dim);
+      border: 1px solid rgba(232,200,74,0.25);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .auth-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 40px;
+      letter-spacing: 0.04em;
+      color: var(--text-primary);
+      line-height: 1;
+      margin-top: 8px;
+    }
+
+    .auth-subtitle { font-size: 14px; color: var(--text-muted); margin-top: 4px; }
+
+    .auth-alert { display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-radius: 10px; font-size: 13px; }
+
+    .auth-alert--error { background: rgba(255,75,75,0.1); border: 1px solid rgba(255,75,75,0.3); color: #ff7a7a; }
+
+    .auth-alert svg { width: 16px !important; height: 16px !important; flex-shrink: 0; }
+
+    /* ── Fields ────────────────────────────────────────────────── */
+    .auth-form { display: flex; flex-direction: column; gap: 18px; }
+    .field-group { display: flex; flex-direction: column; gap: 8px; }
+
+    .field-label {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-label);
+    }
+
+    .field-label svg { width: 13px !important; height: 13px !important; stroke: var(--text-muted); }
+
+    .field-wrap { position: relative; }
+
+    .field-input {
+      width: 100%;
+      padding: 13px 16px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      color: var(--text-primary);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      outline: none;
+      transition: border-color var(--transition), background var(--transition), box-shadow var(--transition);
+    }
+
+    .field-input::placeholder { color: var(--text-muted); }
+
+    .field-input:focus {
+      border-color: rgba(232,200,74,0.5);
+      background: rgba(232,200,74,0.03);
+      box-shadow: 0 0 0 3px rgba(232,200,74,0.08);
+    }
+
+    .field-wrap--password .field-input { padding-right: 48px; }
+
+    .pwd-toggle {
+      position: absolute;
+      right: 12px; top: 50%;
+      transform: translateY(-50%);
+      background: none; border: none; cursor: pointer;
+      padding: 4px; display: grid; place-items: center;
+      color: var(--text-muted);
+      transition: color var(--transition);
+    }
+
+    .pwd-toggle:hover { color: var(--text-primary); }
+    .pwd-toggle svg { width: 16px !important; height: 16px !important; stroke: currentColor; }
+
+    .field-select {
+      width: 100%;
+      padding: 13px 16px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      color: var(--text-primary);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      outline: none; cursor: pointer;
+      appearance: none; -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b6b80' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 16px center;
+      padding-right: 44px;
+      transition: border-color var(--transition), background-color var(--transition), box-shadow var(--transition);
+    }
+
+    .field-select:focus {
+      border-color: rgba(232,200,74,0.5);
+      background-color: rgba(232,200,74,0.03);
+      box-shadow: 0 0 0 3px rgba(232,200,74,0.08);
+    }
+
+    .field-select option { background: var(--surface); color: var(--text-primary); }
+
+    /* ── Buttons ───────────────────────────────────────────────── */
+    .auth-btn {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      width: 100%; padding: 14px 20px;
+      border-radius: var(--radius-btn);
+      font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 700;
+      letter-spacing: 0.04em; cursor: pointer; text-decoration: none;
+      transition: all var(--transition); border: none;
+    }
+
+    .auth-btn svg { width: 16px !important; height: 16px !important; flex-shrink: 0; }
+
+    .auth-btn--primary {
+      background: var(--accent); color: var(--bg);
+      text-transform: uppercase; position: relative; overflow: hidden;
+    }
+
+    .auth-btn--primary::before {
+      content: ''; position: absolute; inset: 0;
+      background: rgba(255,255,255,0); transition: background var(--transition);
+    }
+
+    .auth-btn--primary:hover::before { background: rgba(255,255,255,0.12); }
+    .auth-btn--primary:active { transform: scale(0.98); }
+
+    .auth-btn--ghost {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--card-border);
+      color: var(--text-label); font-size: 13px;
+    }
+
+    .auth-btn--ghost:hover {
+      background: rgba(255,255,255,0.06);
+      border-color: rgba(255,255,255,0.12);
+      color: var(--text-primary);
+    }
+
+    .auth-btn--ghost svg { stroke: currentColor; }
+
+    /* ── Divider ───────────────────────────────────────────────── */
+    .auth-divider { position: relative; text-align: center; }
+
+    .auth-divider::before {
+      content: ''; position: absolute;
+      top: 50%; left: 0; right: 0;
+      height: 1px; background: var(--card-border);
+    }
+
+    .auth-divider span {
+      position: relative; background: var(--card-bg);
+      padding: 0 12px; font-size: 12px;
+      color: var(--text-muted); letter-spacing: 0.04em;
+    }
+
+    /* ── Sign-up extras ────────────────────────────────────────── */
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .btn-row { display: grid; grid-template-columns: 1fr auto; gap: 12px; }
+
+    .auth-btn--reset {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 14px 20px; border-radius: var(--radius-btn);
+      font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600;
+      cursor: pointer; text-decoration: none;
+      border: 1px solid var(--card-border);
+      background: rgba(255,255,255,0.03);
+      color: var(--text-muted); white-space: nowrap;
+      transition: all var(--transition);
+    }
+
+    .auth-btn--reset svg { width: 15px !important; height: 15px !important; stroke: currentColor; }
+
+    .auth-btn--reset:hover {
+      background: rgba(255,75,75,0.08);
+      border-color: rgba(255,75,75,0.3);
+      color: #ff7a7a;
+    }
+
+    .pwd-strength { display: flex; align-items: center; gap: 12px; margin-top: -8px; }
+
+    .strength-bar { flex: 1; height: 3px; background: var(--card-border); border-radius: 100px; overflow: hidden; }
+
+    .strength-fill { height: 100%; border-radius: 100px; width: 0%; transition: width 0.4s ease, background 0.4s ease; }
+
+    .strength-label {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.06em;
+      text-transform: uppercase; min-width: 48px; text-align: right;
+    }
+
+    /* ── Responsive ────────────────────────────────────────────── */
+    @media (max-width: 900px) { .field-row { grid-template-columns: 1fr; } }
+
+    @media (max-width: 768px) {
+      .auth-container, .auth-container--wide { max-width: 480px; grid-template-columns: 1fr; }
+      .auth-panel--brand { display: none; }
+      .form-panel-inner { padding: 40px 28px; }
+    }
+
+    @media (max-width: 480px) {
+      .auth-page { padding: 90px 16px 40px; }
+      .form-panel-inner { padding: 32px 20px; }
+    }
+  </style>
+
+  <script>
+    function togglePassword(inputId, btn) {
+      const input = document.getElementById(inputId);
+      const isText = input.type === 'text';
+      input.type = isText ? 'password' : 'text';
+      btn.querySelector('.eye-show').style.display = isText ? '' : 'none';
+      btn.querySelector('.eye-hide').style.display = isText ? 'none' : '';
+    }
+
+    function resetForm() {
+      document.getElementById('pwdStrength').style.display = 'none';
+    }
+
+    const pwdInput = document.getElementById('password');
+    const strengthEl = document.getElementById('pwdStrength');
+    const fillEl = document.getElementById('strengthFill');
+    const labelEl = document.getElementById('strengthLabel');
+
+    pwdInput.addEventListener('input', function () {
+      const val = this.value;
+      if (!val) { strengthEl.style.display = 'none'; return; }
+      strengthEl.style.display = 'flex';
+
+      let score = 0;
+      if (val.length >= 8) score++;
+      if (/[A-Z]/.test(val)) score++;
+      if (/[0-9]/.test(val)) score++;
+      if (/[^A-Za-z0-9]/.test(val)) score++;
+
+      const levels = [
+        { pct: '25%', color: '#ff4b4b', label: 'Weak' },
+        { pct: '50%', color: '#ff8c42', label: 'Fair' },
+        { pct: '75%', color: '#e8c84a', label: 'Good' },
+        { pct: '100%', color: '#4bffa5', label: 'Strong' },
+      ];
+
+      const lvl = levels[Math.max(0, score - 1)];
+      fillEl.style.width = lvl.pct;
+      fillEl.style.background = lvl.color;
+      labelEl.textContent = lvl.label;
+      labelEl.style.color = lvl.color;
+    });
+  </script>

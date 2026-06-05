@@ -1,0 +1,88 @@
+  <%- include("includes/Head") %> 
+  <%- include("includes/Navigation") %>
+
+
+
+  <!-- ─── Filter Bar ────────────────────────────────────────── -->
+  <!-- <div class="filter-bar" style="margin-top: 50px;">
+    <span class="filter-label">Filter</span>
+    <button class="filter-btn active">All</button>
+    <button class="filter-btn">SUV</button>
+    <button class="filter-btn">Sedan</button>
+    <button class="filter-btn">Sports</button>
+    <button class="filter-btn">Electric</button>
+    <button class="filter-btn">Luxury</button>
+  </div> -->
+
+  <!-- ─── Section Header ────────────────────────────────────── -->
+  <div class="section-header" style="margin-top: 50px;">
+    <h2 class="section-title">Available Cars</h2>
+    <div class="section-line"></div>
+    <span class="car-count"><%= cars.length %> results</span>
+  </div>
+
+  <!-- ─── Cars Grid ─────────────────────────────────────────── -->
+  <main class="cars-grid">
+
+   
+    <% cars.forEach((car) => { %>
+      <article class="car-card featured">
+      <!-- <span class="card-badge badge-popular">Popular</span> -->
+      <!-- <button class="fav-btn" aria-label="Add to favourites">
+        <svg viewBox="0 0 24 24" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+      </button> -->
+      <div class="card-image-wrap">
+        <img class="card-image" src="<%= car.imageUrl%>" alt="<%= car.name %>" loading="lazy" />
+      </div>
+      <div class="card-body">
+        <p class="car-category"><%= car.category %></p>
+        <h3 class="car-name"><%= car.name %></h3>
+        <p class="car-model"><%= car.brand %></p>
+        <div class="car-specs">
+          <div class="spec-item">
+            <div class="spec-icon"><svg viewBox="0 0 24 24" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"/></svg></div>
+            <span class="spec-value"><%= car.seatCapacity %></span>
+            <span class="spec-label">Seats</span>
+          </div>
+          <div class="spec-item">
+            <div class="spec-icon"><svg viewBox="0 0 24 24" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75"/></svg></div>
+            <span class="spec-value"><%= car.transmission %></span>
+            <span class="spec-label">Trans.</span>
+          </div>
+          <div class="spec-item">
+            <div class="spec-icon"><svg viewBox="0 0 24 24" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 9.776c.112-.017.227-.026.344-.026h15.812c.117 0 .232.009.344.026m-16.5 0a2.25 2.25 0 00-1.883 2.542l.857 6a2.25 2.25 0 002.227 1.932H19.05a2.25 2.25 0 002.227-1.932l.857-6a2.25 2.25 0 00-1.883-2.542m-16.5 0V6A2.25 2.25 0 016 3.75h3.879a1.5 1.5 0 011.06.44l2.12２ ２．１２a１．５ １．５ ０ ００１．０６．４４Ｈ１８Ａ２．２５ ２．２５ ０ ０１２０．２５ ９ｖ．７７６"/></svg></div>
+            <span class="spec-value"><%= car.fuelType %></span>
+            <span class="spec-label">Fuel</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="price-block">
+            <span class="price-label">Per Day</span>
+            <div class="price-value"><%= car.rentalPrice %><span>/day</span></div>
+          </div>
+           <form action="/admin/cars/edit" method="POST" style="display: inline-block;">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <input type="hidden" name="carId" value="<%= car._id %>">
+             <button type="submit" class="book-btn">
+            Edit
+            <svg viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+          </button>
+           </form>
+          <a class="book-btn" style="text-decoration: none;" href="/admin/cars/<%= car._id %>/delete">
+            Delete
+            <svg viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+          </a>
+        </div>
+      </div>
+    </article>
+     <% })%>   
+
+  
+
+ 
+
+  </main><!-- /.cars-grid -->
+
+
+  <%- include("includes/Footer") %>
+ 

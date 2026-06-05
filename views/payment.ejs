@@ -1,0 +1,71 @@
+<%- include('includes/Head') %>
+<%- include('includes/Navigation') %>
+
+<main style="min-height:80vh; display:grid; place-items:center; background:#0a0a0f; padding:40px 20px;">
+  <div style="background:#13131c; border:1px solid #1e1e2e; border-radius:20px; padding:40px; max-width:420px; width:100%; text-align:center;">
+    <h2 style="font-family:'Bebas Neue',sans-serif; font-size:36px; color:#f0f0f5; margin:0 0 8px;">Complete Payment</h2>
+    <p style="color:#6b6b80; margin:0 0 28px;">Booking #<%= booking._id.toString().slice(-6).toUpperCase() %></p>
+
+    <div style="background:#0a0a0f; border-radius:12px; padding:20px; margin-bottom:28px; text-align:left;">
+      <div style="display:flex; justify-content:space-between; color:#9999b0; font-size:14px; margin-bottom:10px;">
+        <span>Duration</span><span><%= booking.totalDays %> days</span>
+      </div>
+      <div style="display:flex; justify-content:space-between; font-size:18px; font-weight:700; color:#e8c84a;">
+        <span>Total</span><span>₹<%= booking.totalPrice.toLocaleString('en-IN') %></span>
+      </div>
+    </div>
+
+    <button id="rzp-btn"
+      style="width:100%; padding:16px; background:#e8c84a; color:#0a0a0f; border:none; border-radius:12px;
+             font-family:'DM Sans',sans-serif; font-size:15px; font-weight:700; cursor:pointer; letter-spacing:.04em;">
+      PAY ₹<%= booking.totalPrice.toLocaleString('en-IN') %>
+    </button>
+  </div>
+</main>
+
+<!-- Hidden form to POST verified payment back to server -->
+<form id="payment-form" action="/bookings/verify-payment" method="POST" style="display:none;">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+  <input type="hidden" name="razorpay_order_id"   id="rzp_order_id">
+  <input type="hidden" name="razorpay_payment_id"  id="rzp_payment_id">
+  <input type="hidden" name="razorpay_signature"   id="rzp_signature">
+  <input type="hidden" name="bookingId"             value="<%= booking._id %>">
+</form>
+
+<!-- Razorpay Checkout script -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+  const options = {
+    key:         '<%= keyId %>',
+    amount:      '<%= order.amount %>',         // in paise
+    currency:    'INR',
+    name:        'DriveElite',
+    description: 'Car Rental Booking',
+    order_id:    '<%= order.id %>',             // from backend
+    handler: function (response) {
+      // Razorpay calls this on success — submit the form to verify
+      document.getElementById('rzp_order_id').value   = response.razorpay_order_id;
+      document.getElementById('rzp_payment_id').value = response.razorpay_payment_id;
+      document.getElementById('rzp_signature').value  = response.razorpay_signature;
+      document.getElementById('payment-form').submit();
+    },
+    prefill: {
+      name:  '<%= typeof userName !== "undefined" ? userName : "" %>',
+      email: '<%= typeof userEmail !== "undefined" ? userEmail : "" %>',
+    },
+    theme: { color: '#e8c84a' },
+    modal: {
+      ondismiss: function() {
+        // User closed the popup — redirect back
+        window.location.href = '/bookings';
+      }
+    }
+  };
+
+  document.getElementById('rzp-btn').addEventListener('click', function () {
+    const rzp = new Razorpay(options);
+    rzp.open();
+  });
+</script>
+
+<%- include('includes/Footer') %>
