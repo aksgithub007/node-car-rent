@@ -97,7 +97,7 @@ app.use((err, req, res, next) => {
     isAdmin: req.session?.user?.role === "admin" || false,
     statusCode,
     message,
-    csrfToken: req.csrfToken(),
+   csrfToken: token,
     path:"/500"
   });
 });
