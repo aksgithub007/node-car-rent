@@ -21,13 +21,19 @@ const MongoDBUri = "mongodb+srv://akshayshejwal007:Akki94212bhagu@cluster0.t2p5o
 
 const store = new MongoDBStore({ uri: MongoDBUri, collection: 'sessions', expires:1000 * 60 * 60 * 1  });
 
+app.set('trust proxy', 1) 
+
 app.set('view engine', 'ejs');
 app.set('views','views');
 
 app.use(bodyParser.urlencoded({extended:false}))
 app.use(express.static(path.join(__dirname, "public")))
 
-app.use(Session({secret:"akshayshejwaltrupti", resave:false, saveUninitialized:false, store:store}))
+app.use(Session({secret:"akshayshejwaltrupti", resave:false, saveUninitialized:false, store:store, cookie: {
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax',
+    httpOnly: true,
+  }}))
 
 app.use(async(req, res, next) => {
  try {
