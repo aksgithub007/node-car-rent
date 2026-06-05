@@ -108,7 +108,7 @@ transporter.verify((error, success) => {
     if (error) console.error('Mailer error:', error)
     else console.log('Mailer ready')
   })
-    app.listen(process.env.PORT || 3000)
+    app.listen(3000)
  
     console.log("Database connected successfully")
 }).catch((err) => console.log(err))
