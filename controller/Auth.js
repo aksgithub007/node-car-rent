@@ -2,7 +2,7 @@ const User = require("../model/User")
 const Car = require("../model/Cars")
 const bcrypt = require("bcrypt")
 const crypto = require('crypto');
-const transporter = require('../util/mailes');
+const transporter = require('../util/mailer');
 const UserEmailId = "aksgithub@gmail.com";
 
 
@@ -122,9 +122,9 @@ exports.postResetPassword = async (req, res, next) => {
     user.resetToken = token;
     user.resetTokenExpiry = Date.now() + 3600000;
     await user.save();
-    await transporter.sendTransacEmail({
-          sender: { name: 'DriveElite', email: 'aksgithub@gmail.com' },
-       to: [{ email: email }],
+    await transporter.sendMail({
+        from:`""DriveElite" <${UserEmailId}>`,
+        to:email,
         subject:"Reset Password Link",
         html:
         `

@@ -11,7 +11,7 @@ require('dotenv').config()
 const displayRouter = require("./routes/display")
 const errorController = require("./controller/Error");
 const authRouter = require("./routes/auth");
-const transporter = require("./util/mailes")
+const transporter = require("./util/mailer")
 
 
 
@@ -97,7 +97,7 @@ app.use((err, req, res, next) => {
     isAdmin: req.session?.user?.role === "admin" || false,
     statusCode,
     message,
-   csrfToken: token,
+    csrfToken: req.csrfToken(),
     path:"/500"
   });
 });
@@ -105,7 +105,7 @@ app.use((err, req, res, next) => {
 
 mongoose.connect(MongoDBUri).then((result) => {
 
-    app.listen(3000)
+    app.listen( 3000)
  
     console.log("Database connected successfully")
 }).catch((err) => console.log(err))

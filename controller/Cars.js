@@ -2,7 +2,7 @@ const Car = require('../model/Cars')
 const User = require('../model/User')
 const crypto   = require("crypto");
 const razorpay = require("../util/razorpay");
-const transporter = require("../util/mailes")
+const transporter = require("../util/mailer")
 
 exports.getAllCars = (req, res, next) => {
     res.render('index', {
@@ -139,25 +139,25 @@ exports.createBooking = async (req, res, next) => {
     })
 
     await userDetail.save()
-    await transporter.sendTransacEmail({
-     sender: { name: 'DriveElite', email: 'aksgithub@gmail.com' },
-  to: [{ email: userDetail.email }],       
-      subject: 'Booking Confirmation',
-      html: `
-        <h2>Booking Confirmed!</h2>
-        <p>Hi <strong>${userDetail.name}</strong>,</p>
-        <p>Your booking has been successfully confirmed. Here are your details:</p>
-        <table border="1" cellpadding="8" cellspacing="0">
-          <tr><td><strong>Car</strong></td><td>${car.name}</td></tr>
-          <tr><td><strong>Pick-up Date</strong></td><td>${pickupDate.toDateString()}</td></tr>
-          <tr><td><strong>Drop-off Date</strong></td><td>${dropoffDate.toDateString()}</td></tr>
-          <tr><td><strong>Total Days</strong></td><td>${totalDays}</td></tr>
-          <tr><td><strong>Total Price</strong></td><td>₹${totalPrice}</td></tr>
-          <tr><td><strong>Status</strong></td><td>Confirmed</td></tr>
-        </table>
-        <p>Thank you for choosing us!</p>
-      `
-    })
+    // await transporter.sendMail({
+    //   from:    '"DriveElite" <aksgithub@gmail.com>',
+    //   to:      userDetail.email,         
+    //   subject: 'Booking Confirmation',
+    //   html: `
+    //     <h2>Booking Confirmed!</h2>
+    //     <p>Hi <strong>${userDetail.name}</strong>,</p>
+    //     <p>Your booking has been successfully confirmed. Here are your details:</p>
+    //     <table border="1" cellpadding="8" cellspacing="0">
+    //       <tr><td><strong>Car</strong></td><td>${car.name}</td></tr>
+    //       <tr><td><strong>Pick-up Date</strong></td><td>${pickupDate.toDateString()}</td></tr>
+    //       <tr><td><strong>Drop-off Date</strong></td><td>${dropoffDate.toDateString()}</td></tr>
+    //       <tr><td><strong>Total Days</strong></td><td>${totalDays}</td></tr>
+    //       <tr><td><strong>Total Price</strong></td><td>₹${totalPrice}</td></tr>
+    //       <tr><td><strong>Status</strong></td><td>Confirmed</td></tr>
+    //     </table>
+    //     <p>Thank you for choosing us!</p>
+    //   `
+    // })
 
     req.flash('success', 'Booking successful!')
     res.redirect('/cars')
@@ -206,25 +206,25 @@ exports.cancelBooking = async(req, res, next) => {
     
     userDetail.bookingDetails[bookingIndex].status = "cancelled"
     await userDetail.save()
-   await transporter.sendTransacEmail({
-  sender: { name: 'DriveElite', email: 'aksgithub@gmail.com' },
-  to: [{ email: userDetail.email }],
-  subject: 'Booking Cancelled',
-  html: `
-    <h2>Booking Cancelled</h2>
-    <p>Hi <strong>${userDetail.name}</strong>,</p>
-    <p>Your booking has been cancelled. Here's a summary:</p>
-    <table border="1" cellpadding="8" cellspacing="0">
-      <tr><td><strong>Car</strong></td><td>${car?.name || 'N/A'}</td></tr>
-      <tr><td><strong>Pick-up Date</strong></td><td>${new Date(booking.pickupDate).toDateString()}</td></tr>
-      <tr><td><strong>Drop-off Date</strong></td><td>${new Date(booking.dropoffDate).toDateString()}</td></tr>
-      <tr><td><strong>Total Days</strong></td><td>${booking.totalDays}</td></tr>
-      <tr><td><strong>Total Price</strong></td><td>₹${booking.totalPrice}</td></tr>
-      <tr><td><strong>Status</strong></td><td>Cancelled </td></tr>
-    </table>
-    <p>We hope to serve you again soon!</p>
-  `
-})
+    // await transporter.sendMail({
+    //   from:    '"DriveElite" <aksgithub@gmail.com>',
+    //   to:      userDetail.email,
+    //   subject: 'Booking Cancelled',
+    //   html: `
+    //     <h2>Booking Cancelled</h2>
+    //     <p>Hi <strong>${userDetail.name}</strong>,</p>
+    //     <p>Your booking has been cancelled. Here's a summary:</p>
+    //     <table border="1" cellpadding="8" cellspacing="0">
+    //       <tr><td><strong>Car</strong></td><td>${car?.name || 'N/A'}</td></tr>
+    //       <tr><td><strong>Pick-up Date</strong></td><td>${new Date(booking.pickupDate).toDateString()}</td></tr>
+    //       <tr><td><strong>Drop-off Date</strong></td><td>${new Date(booking.dropoffDate).toDateString()}</td></tr>
+    //       <tr><td><strong>Total Days</strong></td><td>${booking.totalDays}</td></tr>
+    //       <tr><td><strong>Total Price</strong></td><td>₹${booking.totalPrice}</td></tr>
+    //       <tr><td><strong>Status</strong></td><td>Cancelled</td></tr>
+    //     </table>
+    //     <p>We hope to serve you again soon!</p>
+    //   `
+    // })
      req.flash("success", "Booking cancelled successfully")
         res.redirect("/bookings")
 } catch (error) {
@@ -325,27 +325,27 @@ exports.verifyPayment = async (req, res, next) => {
 
     await userDetail.save()
     
-     await transporter.sendTransacEmail({
-     sender: { name: 'DriveElite', email: 'aksgithub@gmail.com' },
-  to: [{ email: userDetail.email }],
-      subject: 'Payment Successful',
-      html: `
-        <h2>Payment Confirmed!</h2>
-        <p>Hi <strong>${userDetail.name}</strong>,</p>
-        <p>Your payment was successful. Here's your receipt:</p>
-        <table border="1" cellpadding="8" cellspacing="0">
-          <tr><td><strong>Car</strong></td><td>${car?.name || 'N/A'}</td></tr>
-          <tr><td><strong>Pick-up Date</strong></td><td>${new Date(booking.pickupDate).toDateString()}</td></tr>
-          <tr><td><strong>Drop-off Date</strong></td><td>${new Date(booking.dropoffDate).toDateString()}</td></tr>
-          <tr><td><strong>Total Days</strong></td><td>${booking.totalDays}</td></tr>
-          <tr><td><strong>Amount Paid</strong></td><td>₹${booking.totalPrice}</td></tr>
-          <tr><td><strong>Payment ID</strong></td><td>${razorpay_payment_id}</td></tr>
-          <tr><td><strong>Order ID</strong></td><td>${razorpay_order_id}</td></tr>
-          <tr><td><strong>Status</strong></td><td>Paid</td></tr>
-        </table>
-        <p>Thank you for your payment. Enjoy your ride!</p>
-      `
-    })
+    //  await transporter.sendMail({
+    //   from:    '"DriveElite" <aksgithub@gmail.com>',
+    //   to:      userDetail.email,
+    //   subject: 'Payment Successful',
+    //   html: `
+    //     <h2>Payment Confirmed!</h2>
+    //     <p>Hi <strong>${userDetail.name}</strong>,</p>
+    //     <p>Your payment was successful. Here's your receipt:</p>
+    //     <table border="1" cellpadding="8" cellspacing="0">
+    //       <tr><td><strong>Car</strong></td><td>${car?.name || 'N/A'}</td></tr>
+    //       <tr><td><strong>Pick-up Date</strong></td><td>${new Date(booking.pickupDate).toDateString()}</td></tr>
+    //       <tr><td><strong>Drop-off Date</strong></td><td>${new Date(booking.dropoffDate).toDateString()}</td></tr>
+    //       <tr><td><strong>Total Days</strong></td><td>${booking.totalDays}</td></tr>
+    //       <tr><td><strong>Amount Paid</strong></td><td>₹${booking.totalPrice}</td></tr>
+    //       <tr><td><strong>Payment ID</strong></td><td>${razorpay_payment_id}</td></tr>
+    //       <tr><td><strong>Order ID</strong></td><td>${razorpay_order_id}</td></tr>
+    //       <tr><td><strong>Status</strong></td><td>Paid</td></tr>
+    //     </table>
+    //     <p>Thank you for your payment. Enjoy your ride!</p>
+    //   `
+    // })
 
     req.flash('success', 'Payment successful!')
     res.redirect('/bookings')
