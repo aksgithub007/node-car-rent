@@ -199,7 +199,11 @@ exports.cancelBooking = async(req, res, next) => {
     if(bookingIndex === -1){
       req.flash("error", "Booking not found")
     //   throw new Error("Booking not found")
-    }   
+    }
+    
+    const booking = userDetail.bookingDetails[bookingIndex]  
+    const car     = await Car.findById(booking.carId).lean()
+    
     userDetail.bookingDetails[bookingIndex].status = "cancelled"
     await userDetail.save()
     await transporter.sendMail({
