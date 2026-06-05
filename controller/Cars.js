@@ -139,8 +139,8 @@ exports.createBooking = async (req, res, next) => {
     })
 
     await userDetail.save()
-    await transporter.emails.send({
-       from: 'DriveElite <onboarding@resend.dev>',
+    await transporter.sendMail({
+      from: '"DriveElite" adb449001@smtp-brevo.com',
       to:      userDetail.email,         
       subject: 'Booking Confirmation',
       html: `
@@ -206,8 +206,8 @@ exports.cancelBooking = async(req, res, next) => {
     
     userDetail.bookingDetails[bookingIndex].status = "cancelled"
     await userDetail.save()
-   await transporter.emails.send({
-  from: 'DriveElite <onboarding@resend.dev>',  // use this until you add your domain
+   await transporter.sendMail({
+  from: '"DriveElite" adb449001@smtp-brevo.com',
   to: userDetail.email,
   subject: 'Booking Cancelled',
   html: `
@@ -325,8 +325,8 @@ exports.verifyPayment = async (req, res, next) => {
 
     await userDetail.save()
     
-     await  transporter.emails.send({
-     from: 'DriveElite <onboarding@resend.dev>',
+     await  transporter.sendMail({
+     from: '"DriveElite" adb449001@smtp-brevo.com',
       to:      userDetail.email,
       subject: 'Payment Successful',
       html: `
