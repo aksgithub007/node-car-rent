@@ -122,9 +122,9 @@ exports.postResetPassword = async (req, res, next) => {
     user.resetToken = token;
     user.resetTokenExpiry = Date.now() + 3600000;
     await user.save();
-    await transporter.sendMail({
-         from: '"DriveElite" <adb449001@smtp-brevo.com>',
-        to:email,
+    await transporter.sendTransacEmail({
+          sender: { name: 'DriveElite', email: 'aksgithub@gmail.com' },
+       to: [{ email: email }],
         subject:"Reset Password Link",
         html:
         `

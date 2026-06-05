@@ -139,9 +139,9 @@ exports.createBooking = async (req, res, next) => {
     })
 
     await userDetail.save()
-    await transporter.sendMail({
-      from: '"DriveElite" <adb449001@smtp-brevo.com>',
-      to:      userDetail.email,         
+    await transporter.sendTransacEmail({
+     sender: { name: 'DriveElite', email: 'aksgithub@gmail.com' },
+  to: [{ email: userDetail.email }],       
       subject: 'Booking Confirmation',
       html: `
         <h2>Booking Confirmed!</h2>
@@ -206,9 +206,9 @@ exports.cancelBooking = async(req, res, next) => {
     
     userDetail.bookingDetails[bookingIndex].status = "cancelled"
     await userDetail.save()
-   await transporter.sendMail({
-  from: '"DriveElite" <adb449001@smtp-brevo.com>',
-  to: userDetail.email,
+   await transporter.sendTransacEmail({
+  sender: { name: 'DriveElite', email: 'aksgithub@gmail.com' },
+  to: [{ email: userDetail.email }],
   subject: 'Booking Cancelled',
   html: `
     <h2>Booking Cancelled</h2>
@@ -325,9 +325,9 @@ exports.verifyPayment = async (req, res, next) => {
 
     await userDetail.save()
     
-     await  transporter.sendMail({
-     from: '"DriveElite" <adb449001@smtp-brevo.com>',
-      to:      userDetail.email,
+     await transporter.sendTransacEmail({
+     sender: { name: 'DriveElite', email: 'aksgithub@gmail.com' },
+  to: [{ email: userDetail.email }],
       subject: 'Payment Successful',
       html: `
         <h2>Payment Confirmed!</h2>
