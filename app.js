@@ -104,10 +104,7 @@ app.use((err, req, res, next) => {
 
 
 mongoose.connect(MongoDBUri).then((result) => {
-transporter.verify((error, success) => {
-    if (error) console.error('Mailer error:', error)
-    else console.log('Mailer ready')
-  })
+
     app.listen(3000)
  
     console.log("Database connected successfully")
