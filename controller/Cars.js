@@ -272,7 +272,7 @@ exports.createPayment = async (req, res, next) => {
       isAdmin:    req.session.user?.role === 'admin',
       order,
       booking,
-      keyId: "rzp_test_SxtlDyLGyLQX27",
+      keyId: process.env.RAZORPAY_KEY_ID,
     })
 
   } catch (error) {
@@ -292,7 +292,7 @@ exports.verifyPayment = async (req, res, next) => {
  
     const body     = razorpay_order_id + '|' + razorpay_payment_id
     const expected = crypto
-      .createHmac('sha256', "KavkmqFHxZlWl86PRz7Pf4mx")
+      .createHmac('sha256', process.env.RAZORPAY_KEY_SECRET)
       .update(body)
       .digest('hex')
 
