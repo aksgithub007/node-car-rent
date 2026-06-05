@@ -11,6 +11,7 @@ const MongoDBStore = require("connect-mongodb-session")(Session)
 const displayRouter = require("./routes/display")
 const errorController = require("./controller/Error");
 const authRouter = require("./routes/auth");
+const transporter = require("./util/mailer")
 
 
 
@@ -23,8 +24,10 @@ const store = new MongoDBStore({ uri: MongoDBUri, collection: 'sessions', expire
 
 app.set('trust proxy', 1) 
 
+
 app.set('view engine', 'ejs');
 app.set('views','views');
+
 
 app.use(bodyParser.urlencoded({extended:false}))
 app.use(express.static(path.join(__dirname, "public")))
@@ -102,5 +105,12 @@ app.use((err, req, res, next) => {
 
 mongoose.connect(MongoDBUri).then((result) => {
     app.listen(3000)
+    transporter.verify((error, success) => {
+  if (error) {
+    console.error('Mailer error:', error)  // check Render logs
+  } else {
+    console.log('Mailer ready')
+  }
+})
     console.log("Database connected successfully")
 }).catch((err) => console.log(err))
