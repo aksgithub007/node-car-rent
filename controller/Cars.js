@@ -202,25 +202,25 @@ exports.cancelBooking = async(req, res, next) => {
     }   
     userDetail.bookingDetails[bookingIndex].status = "cancelled"
     await userDetail.save()
-    // await transporter.sendMail({
-    //   from:    '"DriveElite" <aksgithub@gmail.com>',
-    //   to:      userDetail.email,
-    //   subject: 'Booking Cancelled',
-    //   html: `
-    //     <h2>Booking Cancelled</h2>
-    //     <p>Hi <strong>${userDetail.name}</strong>,</p>
-    //     <p>Your booking has been cancelled. Here's a summary:</p>
-    //     <table border="1" cellpadding="8" cellspacing="0">
-    //       <tr><td><strong>Car</strong></td><td>${car?.name || 'N/A'}</td></tr>
-    //       <tr><td><strong>Pick-up Date</strong></td><td>${new Date(booking.pickupDate).toDateString()}</td></tr>
-    //       <tr><td><strong>Drop-off Date</strong></td><td>${new Date(booking.dropoffDate).toDateString()}</td></tr>
-    //       <tr><td><strong>Total Days</strong></td><td>${booking.totalDays}</td></tr>
-    //       <tr><td><strong>Total Price</strong></td><td>₹${booking.totalPrice}</td></tr>
-    //       <tr><td><strong>Status</strong></td><td>Cancelled</td></tr>
-    //     </table>
-    //     <p>We hope to serve you again soon!</p>
-    //   `
-    // })
+    await transporter.sendMail({
+      from:    '"DriveElite" <aksgithub@gmail.com>',
+      to:      userDetail.email,
+      subject: 'Booking Cancelled',
+      html: `
+        <h2>Booking Cancelled</h2>
+        <p>Hi <strong>${userDetail.name}</strong>,</p>
+        <p>Your booking has been cancelled. Here's a summary:</p>
+        <table border="1" cellpadding="8" cellspacing="0">
+          <tr><td><strong>Car</strong></td><td>${car?.name || 'N/A'}</td></tr>
+          <tr><td><strong>Pick-up Date</strong></td><td>${new Date(booking.pickupDate).toDateString()}</td></tr>
+          <tr><td><strong>Drop-off Date</strong></td><td>${new Date(booking.dropoffDate).toDateString()}</td></tr>
+          <tr><td><strong>Total Days</strong></td><td>${booking.totalDays}</td></tr>
+          <tr><td><strong>Total Price</strong></td><td>₹${booking.totalPrice}</td></tr>
+          <tr><td><strong>Status</strong></td><td>Cancelled</td></tr>
+        </table>
+        <p>We hope to serve you again soon!</p>
+      `
+    })
      req.flash("success", "Booking cancelled successfully")
         res.redirect("/bookings")
 } catch (error) {
