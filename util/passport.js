@@ -6,6 +6,8 @@ const FacebookStrategy = require('passport-facebook').Strategy
 const OpenIDConnectStrategy = require('passport-openidconnect')
 const User = require('../model/User')
 
+const isProduction = process.env.NODE_ENV === 'production'
+
 passport.serializeUser((user, done) => {
   done(null, user._id.toString())
 })
@@ -23,7 +25,9 @@ passport.deserializeUser(async (id, done) => {
 passport.use(new GoogleStrategy({
   clientID:     process.env.GOOGLE_CLIENT_ID,
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-  callbackURL:  process.env.development ? 'http://localhost:3000/auth/google/callback' : 'https://node-car-rent.onrender.com/auth/google/callback'
+  callbackURL:  isProduction
+    ? 'https://node-car-rent.onrender.com/auth/google/callback'
+    : 'http://localhost:3000/auth/google/callback'
 }, async (accessToken, refreshToken, profile, done) => {
   try {
     let user = await User.findOne({ oauthId: profile.id, oauthProvider: 'google' })
@@ -47,7 +51,9 @@ passport.use(new GoogleStrategy({
 passport.use(new FacebookStrategy({
   clientID:     process.env.FACEBOOK_APP_ID,
   clientSecret: process.env.FACEBOOK_APP_SECRET,
-  callbackURL:  process.env.development ? 'http://localhost:3000/auth/facebook/callback' : 'https://node-car-rent.onrender.com/auth/facebook/callback',
+  callbackURL:   isProduction
+    ? 'https://node-car-rent.onrender.com/auth/facebook/callback'
+    : 'http://localhost:3000/auth/facebook/callback',
   profileFields: ['id', 'displayName', 'emails'],
    enableProof:   true   
 }, async (accessToken, refreshToken, profile, done) => {
@@ -76,7 +82,9 @@ passport.use('linkedin', new OpenIDConnectStrategy({
   userInfoURL:       'https://api.linkedin.com/v2/userinfo',
   clientID:          process.env.LINKEDIN_CLIENT_ID,
   clientSecret:      process.env.LINKEDIN_CLIENT_SECRET,
-  callbackURL:       process.env.development ? 'http://localhost:3000/auth/linkedin/callback' : 'https://node-car-rent.onrender.com/auth/linkedin/callback',
+   callbackURL:      isProduction
+    ? 'https://node-car-rent.onrender.com/auth/linkedin/callback'
+    : 'http://localhost:3000/auth/linkedin/callback',
   scope:             ['openid', 'profile', 'email']
 }, async (issuer, profile, done) => {
   try {

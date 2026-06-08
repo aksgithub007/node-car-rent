@@ -16,7 +16,7 @@ const passport  = require('./util/passport')
 const oauthRouter = require('./routes/oauth')
 
 
-
+const isProduction = process.env.NODE_ENV === 'production'
 
 const app = express();
 
@@ -35,8 +35,8 @@ app.use(bodyParser.urlencoded({extended:false}))
 app.use(express.static(path.join(__dirname, "public")))
 
 app.use(Session({secret:"akshayshejwaltrupti", resave:false, saveUninitialized:false, store:store, cookie: {
-    secure: true,
-    sameSite: 'none',
+    secure:   isProduction,                        
+    sameSite: isProduction ? 'none' : 'lax',   
     httpOnly: true,
   }}))
   app.use(passport.initialize())
