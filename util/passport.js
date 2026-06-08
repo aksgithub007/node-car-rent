@@ -23,7 +23,7 @@ passport.deserializeUser(async (id, done) => {
 passport.use(new GoogleStrategy({
   clientID:     process.env.GOOGLE_CLIENT_ID,
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-  callbackURL:  '/auth/google/callback'
+  callbackURL:  Process.env.development ? 'http://localhost:3000/auth/google/callback' : 'https://node-car-rent.onrender.com/auth/google/callback'
 }, async (accessToken, refreshToken, profile, done) => {
   try {
     let user = await User.findOne({ oauthId: profile.id, oauthProvider: 'google' })
@@ -47,7 +47,7 @@ passport.use(new GoogleStrategy({
 passport.use(new FacebookStrategy({
   clientID:     process.env.FACEBOOK_APP_ID,
   clientSecret: process.env.FACEBOOK_APP_SECRET,
-  callbackURL:  '/auth/facebook/callback',
+  callbackURL: Process.env.development ? 'http://localhost:3000/auth/facebook/callback' : 'https://node-car-rent.onrender.com/auth/facebook/callback',
   profileFields: ['id', 'displayName', 'emails']
 }, async (accessToken, refreshToken, profile, done) => {
   try {
@@ -75,7 +75,7 @@ passport.use('linkedin', new OpenIDConnectStrategy({
   userInfoURL:       'https://api.linkedin.com/v2/userinfo',
   clientID:          process.env.LINKEDIN_CLIENT_ID,
   clientSecret:      process.env.LINKEDIN_CLIENT_SECRET,
-  callbackURL:       '/auth/linkedin/callback',
+  callbackURL:       Process.env.development ? 'http://localhost:3000/auth/linkedin/callback' : 'https://node-car-rent.onrender.com/auth/linkedin/callback',
   scope:             ['openid', 'profile', 'email']
 }, async (issuer, profile, done) => {
   try {
