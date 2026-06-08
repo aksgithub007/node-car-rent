@@ -22,7 +22,7 @@ const app = express();
 
 const MongoDBUri = process.env.MONGODB_URI 
 
-const store = new MongoDBStore({ uri: MongoDBUri, collection: 'sessions', expires:1000 * 60 * 60 * 1  });
+const store = new MongoDBStore({ uri: MongoDBUri, collection: 'sessions', expires: 1000 * 60 * 60 * 24   });
 
 app.set('trust proxy', 1) 
 
@@ -34,7 +34,7 @@ app.set('views','views');
 app.use(bodyParser.urlencoded({extended:false}))
 app.use(express.static(path.join(__dirname, "public")))
 
-app.use(Session({secret:"akshayshejwaltrupti", resave:false, saveUninitialized:false, store:store, cookie: {
+app.use(Session({secret:process.env.SESSION_SECRET || "akshayshejwaltrupti", resave:false, saveUninitialized:false, store:store, cookie: {
     secure:   isProduction,                        
     sameSite: isProduction ? 'none' : 'lax',   
     httpOnly: true,
