@@ -109,6 +109,7 @@
                   placeholder="you@example.com"
                   autocomplete="email"
                   required
+                  autofocus
                 />
               </div>
             </div>
@@ -459,22 +460,28 @@
     .field-input {
       width: 100%;
       padding: 13px 16px;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid var(--card-border);
+      background: rgba(255,255,255,0.06);
+      border: 1.5px solid rgba(255,255,255,0.18);
       border-radius: 10px;
       color: var(--text-primary);
       font-family: 'DM Sans', sans-serif;
       font-size: 14px;
       outline: none;
       transition: border-color var(--transition), background var(--transition), box-shadow var(--transition);
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.25);
     }
 
-    .field-input::placeholder { color: var(--text-muted); }
+    .field-input::placeholder { color: rgba(255,255,255,0.3); font-style: italic; }
+
+    .field-input:hover:not(:focus) {
+      border-color: rgba(255,255,255,0.28);
+      background: rgba(255,255,255,0.08);
+    }
 
     .field-input:focus {
-      border-color: rgba(232,200,74,0.5);
-      background: rgba(232,200,74,0.03);
-      box-shadow: 0 0 0 3px rgba(232,200,74,0.08);
+      border-color: rgba(232,200,74,0.7);
+      background: rgba(232,200,74,0.05);
+      box-shadow: 0 0 0 3px rgba(232,200,74,0.12), inset 0 1px 3px rgba(0,0,0,0.2);
     }
 
     .field-wrap--password .field-input { padding-right: 48px; }
@@ -502,8 +509,8 @@
     .field-select {
       width: 100%;
       padding: 13px 16px;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid var(--card-border);
+      background: rgba(255,255,255,0.06);
+      border: 1.5px solid rgba(255,255,255,0.18);
       border-radius: 10px;
       color: var(--text-primary);
       font-family: 'DM Sans', sans-serif;
@@ -517,12 +524,17 @@
       background-position: right 16px center;
       padding-right: 44px;
       transition: border-color var(--transition), background-color var(--transition), box-shadow var(--transition);
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.25);
+    }
+
+    .field-select:hover:not(:focus) {
+      border-color: rgba(255,255,255,0.28);
     }
 
     .field-select:focus {
-      border-color: rgba(232,200,74,0.5);
-      background-color: rgba(232,200,74,0.03);
-      box-shadow: 0 0 0 3px rgba(232,200,74,0.08);
+      border-color: rgba(232,200,74,0.7);
+      background-color: rgba(232,200,74,0.05);
+      box-shadow: 0 0 0 3px rgba(232,200,74,0.12), inset 0 1px 3px rgba(0,0,0,0.2);
     }
 
     .field-select option { background: var(--surface); color: var(--text-primary); }
@@ -722,4 +734,9 @@
       btn.querySelector('.eye-show').style.display = isText ? '' : 'none';
       btn.querySelector('.eye-hide').style.display = isText ? 'none' : '';
     }
+    // Auto-focus first visible field on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      const first = document.querySelector('.field-input:not([type="hidden"]), .field-select');
+      if (first) first.focus();
+    });
   </script>

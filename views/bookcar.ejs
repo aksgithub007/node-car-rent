@@ -147,7 +147,9 @@
                 Pick-up Date
               </label>
               <div class="field-wrap">
-                <input type="date" id="pickupDate" name="pickupDate" class="field-input" required/>
+                <input type="date" id="pickupDate" name="pickupDate" class="field-input" required
+                  autofocus
+                />
               </div>
             </div>
 
@@ -626,6 +628,13 @@
     .auth-btn--primary { grid-column: span 2; }
   }
 </style>
+  <script>
+    // Auto-focus first visible field on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      const first = document.querySelector('.field-input:not([type="hidden"]), .field-select');
+      if (first) { first.focus(); }
+    });
+  </script>
 
 <script>
   const pickupEl    = document.getElementById('pickupDate');
