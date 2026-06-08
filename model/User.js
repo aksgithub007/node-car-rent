@@ -13,7 +13,8 @@ const userSchema = new Schema({
     },
     password:{
         type:String,
-        required:true
+        required:true,
+        default:null
     },
     role:{
         type:String,
@@ -55,7 +56,9 @@ const userSchema = new Schema({
     resetTokenExpiry:{
         type: Date,
         default: null
-    }
+    },
+    oauthId:       { type: String },
+oauthProvider: { type: String },
 },{timestamps:true})
 
 

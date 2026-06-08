@@ -12,6 +12,8 @@ const displayRouter = require("./routes/display")
 const errorController = require("./controller/Error");
 const authRouter = require("./routes/auth");
 const transporter = require("./util/mailer")
+const passport  = require('./util/passport')
+const oauthRouter = require('./routes/oauth')
 
 
 
@@ -33,10 +35,13 @@ app.use(bodyParser.urlencoded({extended:false}))
 app.use(express.static(path.join(__dirname, "public")))
 
 app.use(Session({secret:"akshayshejwaltrupti", resave:false, saveUninitialized:false, store:store, cookie: {
-    secure: process.env.NODE_ENV === 'production',
+    secure: false,
     sameSite: 'lax',
     httpOnly: true,
   }}))
+  app.use(passport.initialize())
+app.use(passport.session())
+
 
 app.use(async(req, res, next) => {
  try {
@@ -56,12 +61,16 @@ app.use(async(req, res, next) => {
  }
     next()
 })
-
+app.use("/auth", oauthRouter)
 app.use(csrf());
 app.use(flash());
 
 app.use((req, res, next) => {
-  res.locals.csrfToken = req.csrfToken();
+   try {
+    res.locals.csrfToken = req.csrfToken();  
+  } catch (_) {
+    res.locals.csrfToken = '';              
+  }
   res.locals.flashError = req.flash('error')[0] || null;
   res.locals.flashSuccess = req.flash('success')[0] || null;
   res.locals.path = req.path;
@@ -69,39 +78,70 @@ app.use((req, res, next) => {
 });
 
 
+
 app.use("/", displayRouter)
 app.use("/admin", authRouter)
 
+
 app.use(errorController.get404Page)
 
+// app.use((err, req, res, next) => {
+//     let token = '';
+//   try { token = req.csrfToken(); } catch (_) {} 
+
+//   if (err.code === 'EBADCSRFTOKEN') {
+//     return res.status(403).render('500', {
+//       isLoggedIn: req.session?.isLoggedIn || false,
+//       isAdmin: req.session?.user?.role === 'admin' || false,
+//       statusCode: 403,
+//       message: 'Invalid form token. Please refresh and try again.',
+//       csrfToken: token
+//     })
+//   }
+//   const statusCode = err.statusCode || 500;
+//   const message = err.message || "Something went wrong";
+
+//   console.error(`[ERROR ${statusCode}]:`, message);
+
+//   res.status(statusCode).render("500", {
+//     isLoggedIn: req.session?.isLoggedIn || false,
+//     isAdmin: req.session?.user?.role === "admin" || false,
+//     statusCode,
+//     message,
+//     csrfToken: req.csrfToken(),
+//     path:"/500"
+//   });
+// });
+
+
 app.use((err, req, res, next) => {
-    let token = '';
-  try { token = req.csrfToken(); } catch (_) {} 
+
+  let token = '';
+  try { token = req.csrfToken(); } catch (_) { token = ''; }
 
   if (err.code === 'EBADCSRFTOKEN') {
     return res.status(403).render('500', {
-      isLoggedIn: req.session?.isLoggedIn || false,
-      isAdmin: req.session?.user?.role === 'admin' || false,
-      statusCode: 403,
-      message: 'Invalid form token. Please refresh and try again.',
-      csrfToken: token
+      isLoggedIn:  req.session?.isLoggedIn || false,
+      isAdmin:     req.session?.user?.role === 'admin' || false,
+      statusCode:  403,
+      message:     'Invalid form token. Please refresh and try again.',
+      csrfToken:   token   
     })
   }
-  const statusCode = err.statusCode || 500;
-  const message = err.message || "Something went wrong";
 
+  const statusCode = err.statusCode || 500;
+  const message    = err.message || "Something went wrong";
   console.error(`[ERROR ${statusCode}]:`, message);
 
   res.status(statusCode).render("500", {
-    isLoggedIn: req.session?.isLoggedIn || false,
-    isAdmin: req.session?.user?.role === "admin" || false,
+    isLoggedIn:  req.session?.isLoggedIn || false,
+    isAdmin:     req.session?.user?.role === "admin" || false,
     statusCode,
     message,
-    csrfToken: req.csrfToken(),
-    path:"/500"
+    csrfToken:   token,   
+    path:        "/500"
   });
 });
-
 
 mongoose.connect(MongoDBUri).then((result) => {
 
