@@ -48,7 +48,8 @@ passport.use(new FacebookStrategy({
   clientID:     process.env.FACEBOOK_APP_ID,
   clientSecret: process.env.FACEBOOK_APP_SECRET,
   callbackURL:  process.env.development ? 'http://localhost:3000/auth/facebook/callback' : 'https://node-car-rent.onrender.com/auth/facebook/callback',
-  profileFields: ['id', 'displayName', 'emails']
+  profileFields: ['id', 'displayName', 'emails'],
+   enableProof:   true   
 }, async (accessToken, refreshToken, profile, done) => {
   try {
     let user = await User.findOne({ oauthId: profile.id, oauthProvider: 'facebook' })

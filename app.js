@@ -35,8 +35,8 @@ app.use(bodyParser.urlencoded({extended:false}))
 app.use(express.static(path.join(__dirname, "public")))
 
 app.use(Session({secret:"akshayshejwaltrupti", resave:false, saveUninitialized:false, store:store, cookie: {
-    secure: false,
-    sameSite: 'lax',
+    secure: true,
+    sameSite: 'none',
     httpOnly: true,
   }}))
   app.use(passport.initialize())
