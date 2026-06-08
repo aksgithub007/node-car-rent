@@ -75,7 +75,7 @@ passport.use('linkedin', new OpenIDConnectStrategy({
   userInfoURL:       'https://api.linkedin.com/v2/userinfo',
   clientID:          process.env.LINKEDIN_CLIENT_ID,
   clientSecret:      process.env.LINKEDIN_CLIENT_SECRET,
-  callbackURL:       'http://localhost:3000/auth/linkedin/callback',
+  callbackURL:       '/auth/linkedin/callback',
   scope:             ['openid', 'profile', 'email']
 }, async (issuer, profile, done) => {
   try {
